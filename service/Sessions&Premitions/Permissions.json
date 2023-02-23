@@ -1,0 +1,15 @@
+{
+    "Permissions": [
+        {
+            "id": "1213",
+            "userPremiss": [
+                "View Subscriptions",
+                "Create Subscriptions",
+                "Delete Subscriptions",
+                "View Movies",
+                "Create Movies",
+                "Delete Movies"
+            ]
+        }
+    ]
+}
