@@ -1,20 +1,28 @@
 const express = require('express');
 const cors = require('cors');
+const connectDB = require('./configs/db');
 
-const moviesRouters = require('./routers/moviesRouters');
-// const usersRouters = require('./routers/usersRouters');
+const moviesRouter = require('./routers/moviesRouter');
+const membersRouter = require('./routers/membersRouter');
+const usersRouter = require('./routers/usersRouter');
+const subscriptionsRouter = require('./routers/subscriptionsRouter');
+const authController = require('./controllers/authControllers');
 
 const app = express();
 const port = 8000;
 
-require('./configs/db');
+connectDB();
 
 app.use(cors());
 app.use(express.json());
-app.use('/movies', moviesRouters);
-// app.use('/users', usersRouters);
+
+// routers
+app.use('/auth', authController);
+app.use('/movies', moviesRouter);
+app.use('/members', membersRouter);
+app.use('/users', usersRouter);
+app.use('/subscriptions', subscriptionsRouter);
 
 app.listen(port, () => {
-    console.log(`movies' API: http://localhost:8000/movies`);
-    // console.log(`users' API: http://localhost:8000/users`);
+  console.log(`app is listening at http://localhost:${port}`);
 });
