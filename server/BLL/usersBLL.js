@@ -1,5 +1,31 @@
 const { User } = require('../models/allModels');
 
+//first serves starting
+const defineAdmin = () => {
+  User.countDocuments({}, (err, count) => {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+    // If user collection is empty(first run of the server), insert default admin user
+    if (count === 0) {
+      const adminUser = {
+        username: "Admin",
+        password: "Ad1234",
+      };
+
+      User.create(adminUser, (err, user) => {
+        if (err) {
+          console.error(err);
+          process.exit(1);
+        }
+        console.log("Default admin user created:", user);
+      });
+    }
+  });
+}
+
+
 // GET - Get All - Read
 const getAllUsers = async () => {
   let users = await User.find({})
@@ -31,6 +57,7 @@ const deleteUser = async (id) => {
 };
 
 module.exports = {
+  defineAdmin,
   getAllUsers,
   getUserById,
   addUser,

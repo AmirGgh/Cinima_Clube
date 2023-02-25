@@ -7,6 +7,7 @@ const membersRouter = require('./routers/membersRouter');
 const usersRouter = require('./routers/usersRouter');
 const subscriptionsRouter = require('./routers/subscriptionsRouter');
 const authController = require('./controllers/authControllers');
+const { defineAdmin } = require('./BLL/usersBLL');
 
 const app = express();
 const port = 8000;
@@ -15,7 +16,7 @@ connectDB();
 
 app.use(cors());
 app.use(express.json());
-
+// defineAdmin()
 // routers
 app.use('/auth', authController);
 app.use('/movies', moviesRouter);

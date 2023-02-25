@@ -6,19 +6,18 @@ const router = express.Router();
 // Entry Point 'http://localhost:8000/users'
 
 // Get All users
-router.route('/').get(async (req, res) => {
-  const private_key = 'somekey'
+router.get('/', async (req, res) => {
+  const PRIVATE_KEY = 'somekey'
   const token = req.headers['x-access-token']
-  if (!token) {
-    return res.status(401).send({ auth: false, message: "No Token Provided" })
-  } else {
-    jwt.verify(token, private_key, async function (err, decoded) {
-      if (err) return res.status(500).send({ auth: false, message: "Failed authenticat" })
-      const users = await usesrsBLL.getAllUsers();
-      res.status(200).send(users);
-    })
-  }
+  if (!token) return res.status(401).send({ auth: false, message: 'No Token Provided' })
+  jwt.verify(token, PRIVATE_KEY, async (err, decoded) => {
+    if (err) res.status(500).send({ auth: false, message: 'Failed To authenticate' })
+    const users = await usesrsBLL.getAllUsers();
+    res.status(200).send(users)
+  })
 });
+
+
 
 // Get user By ID
 router.route('/:id').get(async (req, res) => {
