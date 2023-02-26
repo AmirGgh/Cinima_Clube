@@ -21,7 +21,7 @@ app.use(express.json());
 app.use('/auth', authController);
 app.use('/movies', moviesRouter);
 app.use('/members', membersRouter);
-app.use('/users', usersRouter);
+app.use('/users', usersRouter);// fix get all user
 app.use('/subscriptions', subscriptionsRouter);
 
 app.listen(port, () => {

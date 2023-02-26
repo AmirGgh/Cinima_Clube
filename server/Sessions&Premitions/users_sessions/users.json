@@ -5,7 +5,7 @@
             "FirstName": "Admin",
             "LastName": "a",
             "CreatedDate": "1/1/1",
-            "SessionTimeOut": 480
+            "SessionTimeOut": 7200
         }
     ]
 }

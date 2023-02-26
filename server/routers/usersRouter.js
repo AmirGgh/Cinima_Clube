@@ -5,7 +5,8 @@ const router = express.Router();
 
 // Entry Point 'http://localhost:8000/users'
 
-// Get All users
+// Get All users -> return only users that admin create
+//--------------------------------------------------------------------------------
 router.get('/', async (req, res) => {
   const PRIVATE_KEY = 'somekey'
   const token = req.headers['x-access-token']
@@ -30,6 +31,7 @@ router.route('/:id').get(async (req, res) => {
 router.route('/').post(async (req, res) => {
   const obj = req.body;
   const result = await usesrsBLL.addUser(obj);
+  // add to User.json & premissions 
   res.json(result);
 });
 
@@ -38,6 +40,7 @@ router.route('/:id').put(async (req, res) => {
   const { id } = req.params;
   const obj = req.body;
   const result = await usesrsBLL.updateUser(id, obj);
+  // update to User.json & premissions 
   res.json(result);
 });
 
@@ -45,6 +48,7 @@ router.route('/:id').put(async (req, res) => {
 router.route('/:id').delete(async (req, res) => {
   const { id } = req.params;
   const result = await usesrsBLL.deleteUser(id);
+  // delete at User.json & premissions 
   res.json(result);
 });
 
