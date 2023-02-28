@@ -1,7 +1,7 @@
 {
-    "Permissions": [
+    "permissions": [
         {
-            "id": "1213",
+            "id": "63fc72670ae450e73c73c43d",
             "userPremiss": [
                 "View Subscriptions",
                 "Create Subscriptions",

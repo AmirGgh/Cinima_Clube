@@ -1,3 +1,4 @@
+
 const { getAllUsersFirstTime } = require('../DALS/movieUserDAL');
 const { Member } = require('../models/allModels');
 
@@ -12,8 +13,7 @@ const getAllMembers = async () => {
             await memberModel.save();
         }
     }
-    let members = await Member.find({})
-    return members
+    return await Member.find({})
 };
 
 // GET - Get By Id - read

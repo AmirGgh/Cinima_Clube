@@ -8,14 +8,14 @@ const router = express.Router();
 // Get All users -> return only users that admin create
 //--------------------------------------------------------------------------------
 router.get('/', async (req, res) => {
-  const PRIVATE_KEY = 'somekey'
-  const token = req.headers['x-access-token']
-  if (!token) return res.status(401).send({ auth: false, message: 'No Token Provided' })
-  jwt.verify(token, PRIVATE_KEY, async (err, decoded) => {
-    if (err) res.status(500).send({ auth: false, message: 'Failed To authenticate' })
-    const users = await usesrsBLL.getAllUsers();
-    res.status(200).send(users)
-  })
+  // const PRIVATE_KEY = 'somekey'
+  // const token = req.headers['x-access-token']
+  // if (!token) return res.status(401).send({ auth: false, message: 'No Token Provided' })
+  // jwt.verify(token, PRIVATE_KEY, async (err, decoded) => {
+  //   if (err) res.status(500).send({ auth: false, message: 'Failed To authenticate' })
+  // })
+  const users = await usesrsBLL.getAllUsers();
+  res.status(200).send(users)
 });
 
 

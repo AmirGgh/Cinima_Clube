@@ -1,6 +1,7 @@
 const express = require('express');
 const membersBLL = require('../BLL/membersBLL');
 
+
 const router = express.Router();
 
 // Entry Point 'http://localhost:8000/members'
@@ -8,6 +9,7 @@ const router = express.Router();
 // Get All members
 router.route('/').get(async (req, res) => {
   const members = await membersBLL.getAllMembers();
+
   res.json(members);
 });
 
