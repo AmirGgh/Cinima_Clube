@@ -16,7 +16,7 @@ connectDB();
 
 app.use(cors());
 app.use(express.json());
-// defineAdmin()
+defineAdmin()
 // routers
 app.use('/auth', authController);
 app.use('/movies', moviesRouter);

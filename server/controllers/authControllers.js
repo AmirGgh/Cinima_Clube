@@ -1,5 +1,7 @@
 const express = require('express')
 const jwt = require('jsonwebtoken');
+const { getPremissByIdJson } = require('../BLL/premissionsJsonBLL');
+const { getUserByIdJson } = require('../BLL/userJsonBLL');
 const { getAllUsers } = require('../BLL/usersBLL');
 const router = express.Router();
 
@@ -12,17 +14,21 @@ router.post('/login', async (req, res) => {
     if (validUser) {
         //find user id or username
         const userID = validUser.id
-        console.log(userID)
+
+        const userJSON = await getUserByIdJson(userID)
+        const permiss = await getPremissByIdJson(userID)
+
         // get the secret key 
         const private_key = 'somekey'
 
-        const tokenData = jwt.sign({ id: userID },
+        const tokenData = jwt.sign({ id: userID, role: validUser.username, permissions: permiss.userPremiss },
             private_key,
-            { expiresIn: 7400 } // 2h
+            { expiresIn: userJSON.SessionTimeOut } // 2h
         )
         res.status(200).send({ token: tokenData })
     } else {
         res.sendStatus(401)
     }
 })
+//Number(userJSON.SessionTimeOut)
 module.exports = router;

@@ -7,6 +7,7 @@ const getAllUsersJson = async () => {
 
 const addUserJson = async (obj) => {
     const users = await getAllUsersJson()
+    obj.CreatedDate = new Date().toUTCString()
     users.push(obj)
     await userFile.setUserJSON({ "users": users })
 

@@ -1,15 +1,1 @@
-{
-    "permissions": [
-        {
-            "id": "63fc72670ae450e73c73c43d",
-            "userPremiss": [
-                "View Subscriptions",
-                "Create Subscriptions",
-                "Delete Subscriptions",
-                "View Movies",
-                "Create Movies",
-                "Delete Movies"
-            ]
-        }
-    ]
-}
+{"permissions":[{"id":"63ff4910979370b16372d27f","userPremiss":["CRUD Users","View Subscriptions","Create Subscriptions","Delete Subscriptions","View Movies","Create Movies","Delete Movies"]},{"id":"63ff5c5747fd7a19f5b396db","userPremiss":["View Subscriptions","View Movies"]}]}
