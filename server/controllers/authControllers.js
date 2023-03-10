@@ -25,7 +25,7 @@ router.post('/login', async (req, res) => {
             private_key,
             { expiresIn: userJSON.SessionTimeOut } // 2h
         )
-        res.status(200).send({ token: tokenData })
+        res.status(200).send({ token: tokenData, id: userID, role: validUser.username })
     } else {
         res.sendStatus(401)
     }
