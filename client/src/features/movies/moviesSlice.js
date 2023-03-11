@@ -17,32 +17,21 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 ...result.ids.map(id => ({ type: 'Movie', id }))
             ]
         }),
-        // getPostsByUserId: builder.query({
-        //     query: id => `/posts/?userId=${id}`,
-        //     transformResponse: responseData => {
-        //         let min = 1;
-        //         const loadedPosts = responseData.map(post => {
-        //             if (!post?.date) post.date = sub(new Date(), { minutes: min++ }).toISOString();
-        //             if (!post?.reactions) post.reactions = {
-        //                 thumbsUp: 0,
-        //                 wow: 0,
-        //                 heart: 0,
-        //                 rocket: 0,
-        //                 coffee: 0
-        //             }
-        //             return post;
-        //         });
-        //         return moviesAdapter.setAll(initialState, loadedPosts)
-        //     },
-        //     providesTags: (result, error, arg) => [
-        //         ...result.ids.map(id => ({ type: 'Post', id }))
-        //     ]
-        // }),
+        getMovieById: builder.query({
+            query: id => `/movies/?id=${id}`,
+            transformResponse: responseData => {
+                const movie = { ...responseData, id: responseData._id }
+                return moviesAdapter.setAll(moviesAdapter.getInitialState(), movie)
+            },
+            providesTags: (result, error, arg) => [
+                ...result.ids.map(id => ({ type: 'Movie', id }))
+            ]
+        }),
         // addNewMovie: builder.mutation({
         //     query: initialMovie => ({
         //         url: '/movies',
         //         method: 'POST',
-        //         body:  movie
+        //         body: movie
         //     }),
         //     invalidatesTags: [
         //         { type: 'Movie', id: "LIST" }
@@ -52,22 +41,22 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         //     query: initialMovie => ({
         //         url: `/movies/${initialMovie.id}`,
         //         method: 'PUT',
-        //         body:  movie
+        //         body: movie
         //     }),
         //     invalidatesTags: (result, error, arg) => [
         //         { type: 'Movie', id: arg.id }
         //     ]
         // }),
-        // deleteMovie: builder.mutation({
-        //     query: ({ id }) => ({
-        //         url: `/movies/${id}`,
-        //         method: 'DELETE',
-        //         body:  id 
-        //     }),
-        //     invalidatesTags: (result, error, arg) => [
-        //         { type: 'Movie', id: arg.id }
-        //     ]
-        // })
+        deleteMovie: builder.mutation({
+            query: ({ id }) => ({
+                url: `/movies/${id}`,
+                method: 'DELETE',
+                body: id
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Movie', id: arg.id }
+            ]
+        })
     })
 })
 

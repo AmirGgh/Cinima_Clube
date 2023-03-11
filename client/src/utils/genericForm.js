@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import TextField from '@mui/material/TextField';
+import { Button, Paper } from '@mui/material';
 
 function GenericForm(props) {
     const [formData, setFormData] = useState({});
@@ -9,6 +11,8 @@ function GenericForm(props) {
             ...prevState,
             [name]: value
         }));
+        console.log(formData)
+
     }
 
     function handleSubmit(event) {
@@ -19,18 +23,17 @@ function GenericForm(props) {
     const handleReset = () => {
         setFormData({});
     }
-    console.log(formData)
+
+
     return (
-        <form onSubmit={handleSubmit}>
+        <Paper variant="outlined"  >
             {props.fields.map(field => (
-                <label key={field.name}>
-                    {field.label}:
-                    <input type={field.type} name={field.name} value={formData[field.name] || ''} onChange={handleChange} />
-                </label>
+                <TextField key={field.name} name={field.name} label={field.name} variant="outlined" onChange={handleChange} />
             ))}
-            <button type="submit">{props.typeForm}</button>
-        </form>
+            <Button onClick={handleSubmit}>{props.typeForm}</Button>
+        </Paper>
     );
 }
 
 export default GenericForm;
+

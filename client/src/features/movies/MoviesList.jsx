@@ -1,9 +1,11 @@
+import { Grid, Paper, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Movie from './Movie';
 import { useGetMoviesQuery } from './moviesSlice';
 
 const MoviesList = () => {
     const navigate = useNavigate()
+
     const {
         data: movies,
         isLoading,
@@ -27,10 +29,9 @@ const MoviesList = () => {
         return
     }
     return (
-        <section>
-            <h3>All Movies</h3>
+        <Grid container display="flex" spacing={2}  >
             {content}
-        </section>
+        </Grid>
     )
 }
 export default MoviesList

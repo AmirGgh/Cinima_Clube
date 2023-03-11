@@ -19,7 +19,7 @@ const Login = () => {
                     authService.saveToken(res.data.token)
                     authService.saveId(res.data.id)
                     authService.saveRole(res.data.role)
-                    navigate('main')
+                    navigate('/movies')
                 }
             })
     };
