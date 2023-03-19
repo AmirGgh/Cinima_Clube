@@ -9,7 +9,6 @@ const router = express.Router();
 // Get All members
 router.route('/').get(async (req, res) => {
   const members = await membersBLL.getAllMembers();
-
   res.json(members);
 });
 

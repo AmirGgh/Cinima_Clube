@@ -1,21 +1,18 @@
 
 const { getAllUsersFirstTime } = require('../DALS/movieUserDAL');
 const { Member } = require('../models/allModels');
+const { getAllUsersJson } = require('./userJsonBLL');
 
 // GET - Get All - Read
 const getAllMembers = async () => {
-    const count = await Member.countDocuments({});
-    if (count === 0) {
-        const { data } = await getAllUsersFirstTime()
-        for (let mem of data) {
-            mem = { ...mem, city: mem.address.city }
-            const memberModel = new Member(mem);
-            await memberModel.save();
-        }
-    }
     return await Member.find({})
 };
-
+const menageMembers = async () => {
+    const members = await Member.find({})
+    const usersPremiss = await getAllPremissJson().permissions
+    const allUsers = await getAllUsersJson().users
+    return { members: members, usersPremiss: usersPremiss, allUsers: allUsers }
+};
 // GET - Get By Id - read
 const getMemberById = (id) => {
     return Member.findById({ _id: id });
@@ -46,4 +43,5 @@ module.exports = {
     addMember,
     updateMember,
     deleteMember,
+    menageMembers
 };

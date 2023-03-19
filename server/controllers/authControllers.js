@@ -6,10 +6,12 @@ const { getAllUsers } = require('../BLL/usersBLL');
 const router = express.Router();
 
 router.post('/login', async (req, res) => {
+    ////// --------------- get by user name => password
     const users = await getAllUsers()
     const username = req.body.username
     const password = req.body.password
     const validUser = users.find((user) => user.username === username && user.password === password)
+    console.log(validUser)
     //valid name & password
     if (validUser) {
         //find user id or username

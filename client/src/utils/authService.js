@@ -23,4 +23,7 @@ const getRole = () => {
     return sessionStorage["role"]
 }
 
-export default { login, saveToken, getToken, saveId, getId, saveRole, getRole }
+const reset = () => {
+    localStorage.clear();
+}
+export default { login, saveToken, getToken, saveId, getId, saveRole, getRole, reset }

@@ -1,8 +1,12 @@
 import React, { useEffect } from 'react';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
 import { useNavigate } from 'react-router-dom';
 import authService from '../utils/authService'
 import GenericForm from '../utils/genericForm';
+import { styleModal } from '../utils/theme'
 
 const Login = () => {
     const navigate = useNavigate()
@@ -25,7 +29,18 @@ const Login = () => {
     };
 
     return (
-        <GenericForm typeForm={"login"} fields={fields} onSubmit={handleSubmit} />
+        <div>
+            <Modal
+                open={true}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={styleModal} >
+                    <Typography variant="h6" component="h2"> Welcome! </Typography>
+                    <GenericForm typeForm={"login"} fields={fields} onSubmit={handleSubmit} />
+                </Box>
+            </Modal>
+        </div>
     );
 };
 

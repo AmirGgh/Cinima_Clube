@@ -4,15 +4,11 @@ import { useGetMoviesQuery } from './moviesSlice';
 
 
 import { styled } from '@mui/material/styles';
+import MovieDisplay from './MovieDisplay';
+import { useState } from 'react';
+import EditMovie from './EditMovie';
 
-const Cardi = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    margin: 2
-}));
+
 
 const Movie = ({ movieId }) => {
     const { movie } = useGetMoviesQuery('getMovies', {
@@ -21,6 +17,14 @@ const Movie = ({ movieId }) => {
         }),
     })
     // console.log(movie)
+    const [showMovie, setShowMovie] = useState(false)
+    const [editMovie, setEditMovie] = useState(false)
+    const show = () => {
+        setShowMovie(!showMovie)
+    }
+    const edit = () => {
+        setEditMovie(!editMovie)
+    }
     return (
         <Card sx={{
             my: 1,
@@ -32,16 +36,12 @@ const Movie = ({ movieId }) => {
             />
             <CardContent>
                 <Typography >{movie.name}</Typography >
-                {/* <Typography >premiered: {movie.premiered}</Typography >
-                    <p className="movieCredit">
-                        <Link to={`movies/${movie.id}`}>View Movie</Link>
-                        summary:
-                        {movie.summary}
-                    </p> */}
             </CardContent>
             <CardActions>
-                <Button size="small">Show More</Button>
-                <Button size="small">Edit</Button>
+                <Button size="small" onClick={show}>Show More</Button>
+                <Button size="small" onClick={edit}>Edit</Button>
+                <MovieDisplay show={show} showMovie={showMovie} movie={movie} />
+                <EditMovie edit={edit} editMovie={editMovie} movie={movie} />
             </CardActions>
         </Card>
     )

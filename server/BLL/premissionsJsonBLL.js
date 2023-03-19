@@ -5,24 +5,26 @@ const getAllPremissJson = async () => {
     return permissions
 }
 
-const addPremissJson = async (obj) => {
-    const permissions = await getAllPremissJson()
-    permissions.push(obj)
-    await PremissFile.setPremissJSON({ "permissions": permissions })
-
-}
 const getPremissByIdJson = async (id) => {
     const permissions = await getAllPremissJson()
     let permission = permissions.find((perm) => perm.id === id)
     if (permission) return permission
     return 'user not found'
 }
+
+const addPremissJson = async (obj) => {
+    const permissions = await getAllPremissJson()
+    permissions.push(obj)
+    await PremissFile.setPremissJSON({ "permissions": permissions })
+    return "added!"
+}
+
 // update ONLY the userPremiss array ***
 const updatePremissJson = async (id, obj) => {
     const permissions = await getAllPremissJson()
     const permIndex = permissions.findIndex(perm => perm.id === id)
     if (permIndex != -1) {
-        permissions[permIndex].userPremiss = obj
+        permissions[permIndex].userPremiss = obj.userPremiss
         return await PremissFile.setPremissJSON({ "permissions": permissions })
     } else {
         return 'user not found'
@@ -36,4 +38,4 @@ const deletePremissJson = async (id) => {
 
 
 
-module.exports = { getAllPremissJson, getPremissByIdJson, updatePremissJson, deletePremissJson, addPremissJson }
+module.exports = { getAllPremissJson, getPremissByIdJson, addPremissJson, updatePremissJson, deletePremissJson }

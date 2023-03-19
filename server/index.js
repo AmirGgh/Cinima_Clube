@@ -6,6 +6,8 @@ const moviesRouter = require('./routers/moviesRouter');
 const membersRouter = require('./routers/membersRouter');
 const usersRouter = require('./routers/usersRouter');
 const subscriptionsRouter = require('./routers/subscriptionsRouter');
+const jsonPremiRouter = require('./routers/jsonPremissionsRouter');
+const jsonDataRouter = require('./routers/jsonDataRouter');
 const authController = require('./controllers/authControllers');
 const { defineAdmin } = require('./BLL/usersBLL');
 
@@ -22,7 +24,10 @@ app.use('/auth', authController);
 app.use('/movies', moviesRouter);
 app.use('/members', membersRouter);
 app.use('/users', usersRouter);
+app.use('/users/allUsers', usersRouter);
 app.use('/subscriptions', subscriptionsRouter);
+app.use('/jsonPremi', jsonPremiRouter);
+app.use('/jsonData', jsonDataRouter);
 
 app.listen(port, () => {
   console.log(`app is listening at http://localhost:${port}`);

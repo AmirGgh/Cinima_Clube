@@ -10,9 +10,10 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ApiProvider api={apiSlice}>
     <BrowserRouter>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
+
+      <App />
+
     </BrowserRouter>
   </ApiProvider>
 );
+  // <React.StrictMode>  </React.StrictMode>

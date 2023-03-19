@@ -1,59 +1,78 @@
 const { User } = require('../models/allModels');
-const { addPremissJson, deletePremissJson } = require('./premissionsJsonBLL');
-const { addUserJson, deleteUserJson } = require('./userJsonBLL');
+const { Member } = require('../models/allModels');
+
+const { addPremissJson, deletePremissJson, getAllPremissJson } = require('./premissionsJsonBLL');
+const { addUserJson, deleteUserJson, getAllUsersJson } = require('./userJsonBLL');
+const membersBLL = require('../BLL/membersBLL');
+const { getAllUsersFirstTime } = require('../DALS/movieUserDAL');
+
 //add, update and delete will effect the files: premissionsData.json and users.json
 
 
 
-// GET - Get All - Read
+//  Get All - Read - users+jsons
+// first start : username=first name, password=last name, sets member values normally, basic premissions and sessions
 const getAllUsers = async () => {
-  let users = await User.find({})
-  return users
+  return await User.find({})
+};
+const allUsers = async () => {
+  const premissions = await getAllPremissJson()
+  const usersData = await getAllUsersJson()
+  const members = await Member.find({})
+  const username = await User.find({})
+  const data = username.map((u) => { return { "id": u.id, "username": u.username, "member": members.find((m) => m.idUser === u.id), "premissions": premissions.find((p) => p.id === u.id).userPremiss, "usersData": usersData.find((d) => d.id === u.id) } })
+  return { data }
 };
 
-// GET - Get By Id - read
+
+//  Get By Id - read + premissions??????
 const getUserById = (id) => {
   return User.findById({ _id: id });
 };
 
-// POST - Create
+//  Create
+// {usernam:'',password:'', permissions:[], user:{},member:{}}
 const addUser = async (obj) => {
-  const mov = new User({ username: obj.username, password: obj.password });
-  const user = await mov.save()
+  const u = new User({ username: obj.username, password: obj.password });
+  const user = await u.save()
+  await user.save()
   const userJSON = { id: user.id, ...obj.user }
   const permJSON = { id: user.id, ...obj.permissions }
-  addUserJson(userJSON)
-  addPremissJson(permJSON)
-
-  return 'Created!';
+  const member = { idUser: user.id, ...obj.member }
+  await addUserJson(userJSON)
+  await addPremissJson(permJSON)
+  if (member) await membersBLL.addMember(member)
+  return 'Created!'
 };
 
 //first serves starting
-const defineAdmin = () => {
-  User.countDocuments({}, (err, count) => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
+const defineAdmin = async () => {
+  const countMember = await Member.countDocuments({})
+  // If user collection is empty(first run of the server), insert default admin user and other default users
+  let numUsers = 11
+  if (countMember < numUsers) {
+    const { data } = await getAllUsersFirstTime()
+    await addUser({
+      "username": "admin",
+      "password": "ad1234",
+      "user": { "FirstName": "Admin", "LastName": "a", "SessionTimeOut": 10000 },
+      "permissions": { "userPremiss": ["CRUD Users", "View Subscriptions", "Create Subscriptions", "Delete Subscriptions", "View Movies", "Create Movies", "Delete Movies"] }
+    })
+    for (let user of data) {
+      let [username, password] = user.name.split(" ");
+      let newUser = { "username": username, "password": password, "permissions": { "userPremiss": ["View Movies", "View Subscriptions", "Create Subscriptions"] }, "user": { "firstName": username, "lastName": password, "SessionTimeOut": 200 }, member: { ...user, "city": user.address.city, "firstName": username, "lastName": password } }
+      await addUser(newUser)
     }
-    // If user collection is empty(first run of the server), insert default admin user
-    if (count === 0) {
-      addUser({
-        "username": "Admin",
-        "password": "Ad1234",
-        "user": { "FirstName": "Admin", "LastName": "a", "SessionTimeOut": 10000 },
-        "permissions": { "userPremiss": ["CRUD Users", "View Subscriptions", "Create Subscriptions", "Delete Subscriptions", "View Movies", "Create Movies", "Delete Movies"] }
-      })
-      console.log("Default admin user created!");
-    }
-  });
+
+  } else { console.log("All default users created!") }
 }
-// PUT - Update - 
+//  Update - username, first + last name, premissions, sessions 
 const updateUser = async (id, obj) => {
   await User.findByIdAndUpdate(id, obj);
   return 'Updated!';
 };
 
-// DELETE - Delete
+// DELETE - Delete db -> user + subscripions,  jsons
 const deleteUser = async (id) => {
   await User.findByIdAndDelete(id);
   deletePremissJson(id)
@@ -68,4 +87,6 @@ module.exports = {
   addUser,
   updateUser,
   deleteUser,
+  allUsers
 };
+

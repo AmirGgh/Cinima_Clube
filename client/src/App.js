@@ -14,7 +14,7 @@ function App() {
       <CssBaseline />
       <Header />
       <br />
-      <Container display="flex" >
+      <Container fixed >
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />

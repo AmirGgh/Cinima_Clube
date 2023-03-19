@@ -3,23 +3,27 @@ import { apiSlice } from "../api/apiSlice";
 
 const usersAdapter = createEntityAdapter()
 
-const initialState = usersAdapter.getInitialState()
+
+
 
 export const usersApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getUsers: builder.query({
-            query: () => '/users',
+            query: () => '/users/allUsers',
             transformResponse: responseData => {
-                return usersAdapter.setAll(initialState, responseData)
+                const entities = responseData.data; // assuming the entities are nested under a 'data' property
+                return usersAdapter.setAll(usersAdapter.getInitialState(), entities);
             },
             providesTags: (result, error, arg) => [
                 { type: 'User', id: "LIST" },
                 ...result.ids.map(id => ({ type: 'User', id }))
             ]
-        })
+        }),
     })
 })
 
 export const {
     useGetUsersQuery
 } = usersApiSlice
+
+

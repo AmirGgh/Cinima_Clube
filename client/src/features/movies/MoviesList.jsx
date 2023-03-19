@@ -1,8 +1,9 @@
-import { Grid, Paper, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Movie from './Movie';
 import { useGetMoviesQuery } from './moviesSlice';
 
+import Loading from '../../components/Loading';
 const MoviesList = () => {
     const navigate = useNavigate()
 
@@ -18,7 +19,7 @@ const MoviesList = () => {
 
     let content;
     if (isLoading) {
-        content = <p>"Loading..."</p>;
+        content = <Loading />
     }
     else if (isSuccess) {
         content = movies.ids.map(movieId => <Movie key={movieId} movieId={movieId} />)

@@ -36,7 +36,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import TheatersRoundedIcon from '@mui/icons-material/TheatersRounded';
-const pages = ['Movies', 'Subsriptions', 'Menage Users', 'Profile'];
+const pages = ['movies', 'subscriptions', 'users', 'profile'];
 
 
 function Header() {
@@ -117,14 +117,14 @@ function Header() {
                         >
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
+                                    <Typography textAlign="center"><Link style={{ textDecoration: "none", color: "white" }} to={`/${page}`}>{page}</Link></Typography>
                                 </MenuItem>
                             ))}
                             <MenuItem
                                 key="Logout"
                                 onClick={handleCloseNavMenu}
                             >
-                                Logout
+                                <Link style={{ textDecoration: "none", color: "white" }} to={'/'}>Logout</Link>
                             </MenuItem>
                         </Menu>
                     </Box>
@@ -154,7 +154,7 @@ function Header() {
                                 onClick={handleCloseNavMenu}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
-                                {page}
+                                <Link style={{ textDecoration: "none", color: "white" }} to={`/${page}`}>{page}</Link>
                             </Button>
                         ))}
 
@@ -162,7 +162,7 @@ function Header() {
                     <Button key="Logout"
                         onClick={handleCloseNavMenu}
                         sx={{ color: 'white', display: { xs: 'none', md: 'flex' } }}>
-                        Logout
+                        <Link style={{ textDecoration: "none", color: "white" }} to={'/'} >Logout</Link>
                     </Button>
 
                 </Toolbar>
