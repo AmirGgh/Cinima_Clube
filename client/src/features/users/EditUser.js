@@ -9,11 +9,6 @@ export default function EditUser({ editUser, edit, user }) {
         { label: 'Last Name', name: 'lastName', type: 'text' },
         { label: 'Session time out', name: 'SessionTimeOut', type: 'number' },
     ]
-    const checkBox = [
-        { label: 'First Name', name: 'firstName' },
-        { label: 'Last Name', name: 'lastName' },
-        { label: 'Session time out', name: 'SessionTimeOut' },
-    ]
     return (
         <Modal open={editUser} onClose={edit}>
             <Box sx={styleModal} >

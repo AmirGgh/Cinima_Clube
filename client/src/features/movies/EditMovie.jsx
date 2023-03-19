@@ -7,7 +7,7 @@ export default function EditMovie({ editMovie, edit, movie }) {
     const fields = [
         { label: 'movie name', name: 'name', type: 'text' },
         { label: 'genres', name: 'genres', type: 'text' },
-        { label: 'image', name: 'image', type: 'text' },
+        { label: 'image(link)', name: 'image', type: 'text' },
         { label: 'premiered', name: 'premiered', type: 'text' },
     ]
 

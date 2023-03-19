@@ -20,4 +20,5 @@ const styleModal = {
 const styleTextInput = {
     margin: 1, display: 'block', justifyContent: 'center', alignItems: 'center', flexGrow: 1
 };
+
 export { theme, styleModal, styleTextInput }
