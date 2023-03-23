@@ -11,7 +11,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         getUsers: builder.query({
             query: () => '/users/allUsers',
             transformResponse: responseData => {
-                const entities = responseData.data; // assuming the entities are nested under a 'data' property
+                const entities = responseData.data;
                 return usersAdapter.setAll(usersAdapter.getInitialState(), entities);
             },
             providesTags: (result, error, arg) => [

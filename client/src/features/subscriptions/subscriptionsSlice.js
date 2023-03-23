@@ -2,16 +2,24 @@ import { createEntityAdapter } from "@reduxjs/toolkit";
 import { sub } from 'date-fns';
 import { apiSlice } from "../api/apiSlice";
 
-const subscriptionsAdapter = createEntityAdapter()
-const membersAdapter = createEntityAdapter()
+const subscriptionsAdapter = createEntityAdapter(
+    {
+        selectId: (subscription) => subscription.memberID
+    }
+)
+const membersAdapter = createEntityAdapter(
+    {
+        selectId: (member) => member._id
+    }
+)
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getSubscriptions: builder.query({
             query: () => '/subscriptions',
             transformResponse: responseData => {
-                const subscriptions = responseData.map(subscription => ({ ...subscription, id: subscription._id }))
-                return subscriptionsAdapter.setAll(subscriptionsAdapter.getInitialState(), subscriptions)
+
+                return subscriptionsAdapter.setAll(subscriptionsAdapter.getInitialState(), responseData)
             },
             providesTags: (result, error, arg) => [
                 { type: 'Subscription', id: "LIST" },
@@ -21,24 +29,24 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         getMembers: builder.query({
             query: () => '/members',
             transformResponse: responseData => {
-                const members = responseData.map(members => ({ ...members, id: members._id }))
-                return membersAdapter.setAll(membersAdapter.getInitialState(), members)
+
+                return membersAdapter.setAll(membersAdapter.getInitialState(), responseData)
             },
             providesTags: (result, error, arg) => [
                 { type: 'Member', id: "LIST" },
                 ...result.ids.map(id => ({ type: 'Member', id }))
             ]
         }),
-        getSubscriptionById: builder.query({
-            query: id => `/subscriptions/?id=${id}`,
-            transformResponse: responseData => {
-                const subscription = { ...responseData, id: responseData._id }
-                return subscriptionsAdapter.setAll(subscriptionsAdapter.getInitialState(), subscription)
-            },
-            providesTags: (result, error, arg) => [
-                ...result.ids.map(id => ({ type: 'Subscription', id }))
-            ]
-        }),
+        // getSubscriptionByMemberId: builder.query({
+        //     query: (memberId) => `/subscriptions/?memberID=${memberId}`,
+        //     transformResponse: (responseData) => {
+        //         // transform the response as needed
+        //         return responseData;
+        //     },
+        //     providesTags: (result, error, arg) => [
+        //         { type: 'Subscription', id: result ? result._id : arg },
+        //     ],
+        // }),
         // addNewMovie: builder.mutation({
         //     query: initialMovie => ({
         //         url: '/movies',
@@ -76,8 +84,11 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 export const {
     useGetSubscriptionsQuery,
     useGetMembersQuery,
-    useGetSubscriptionByIdQuery,
     useAddNewSubscriptionMutation,
     useUpdateSubscriptionMutation,
     useDeleteSubscriptionMutation,
 } = extendedApiSlice
+
+
+
+

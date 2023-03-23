@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
-import { Button, Box, styled, FormGroup, FormControlLabel, Checkbox, Typography, FormControl, FormLabel } from '@mui/material';
+import { Button, Box, FormGroup, FormControlLabel, Checkbox, FormControl, FormLabel } from '@mui/material';
 import authService from '../utils/authService'
 import { styleTextInput } from './theme';
 

@@ -15,7 +15,12 @@ const SubscriptionsList = () => {
         error,
         isUninitialized
     } = useGetMembersQuery('getMembers')
-    console.log(members)
+    // console.log(members)
+
+    const {
+        data: subscriptions,
+    } = useGetSubscriptionsQuery('getSubscriptions')
+    console.log(subscriptions)
 
     let content = 'k'
     if (isLoading) {

@@ -1,11 +1,9 @@
-import { Button, Card, CardActions, CardContent, CardMedia, ListItem, Paper, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
+import { Button, Card, CardActions, CardContent, CardMedia, ListItem, Paper, Typography, Select } from '@mui/material';
 
 import { useState } from 'react';
-import { useGetSubscriptionByIdQuery, useGetMembersQuery } from './subscriptionsSlice'
-
-
+import { useGetSubscriptionsQuery, useGetMembersQuery } from './subscriptionsSlice'
+import { useGetMovieByIdQuery } from '../movies/moviesSlice';
+import MoviesWatched from './MoviesWatched';
 
 
 const Subscription = ({ id }) => {
@@ -14,49 +12,58 @@ const Subscription = ({ id }) => {
             member: data?.entities[id]
         }),
     })
-    // console.log(member)
+    const { subscription, isSuccess } = useGetSubscriptionsQuery('getSubscriptions', {
+        selectFromResult: ({ data }) => ({
+            subscription: data?.entities[member._id]
+        }),
+    })
+    const [newSubscribe, setNewSubscribe] = useState(false)
+    const newSubs = () => {
+        setNewSubscribe(!newSubscribe)
+    }
 
-    const {
-        data: subscriptions,
-        isLoading,
-        isSuccess,
-        isError,
-        error,
-        isUninitialized
-    } = useGetSubscriptionByIdQuery(member.id);
-    // const { ids, entities } = subscriptions
-    // console.log({ ids, entities })
-    // const [deleteMember, setDeleteMember] = useState(false)
-    // const [editMember, setEditMember] = useState(false)
-    // const delMember = () => {
-    //     setDeleteMember(!deleteMember)
-    // }
-    // const edit = () => {
-    //     setEditMember(!editMember)
-    // }
-
-
+    let content
+    if (subscription) {
+        content = subscription?.movieWatched.map((id, index) => <MoviesWatched date={subscription.dateWatched[index]} key={id} id={id} />)
+    }
     return (
         <Card sx={{
             my: 1,
             mx: 1
-        }}>
+        }} >
             <CardContent>
                 <Typography > First Name: {member.firstName}{member.lastName}</Typography >
                 <Typography > Email: {member.email}</Typography >
                 <Typography > City: {member.city}</Typography >
-                <hr />
-                <Typography > Movies Watched</Typography >
+                <hr /> <CardActions>
+                    {!newSubscribe && <Button size="small" onClick={newSubs}>subscribe to new move</Button>}
+
+                </CardActions>
+                Movies Watched: {content && content}
 
             </CardContent>
-            <CardActions>
-                {/* <Button size="small" onClick={edit}>Edit</Button>
-                <Button size="small" onClick={delUser}>Delete</Button>
-                <EditUser edit={edit} editUser={editUser} user={user} />
-                <EditMovie edit={edit} editMovie={editMovie} movie={movie} /> */}
-            </CardActions>
+
         </Card >
     )
 }
 
 export default Subscription
+
+// {newSubscribe &&
+//     <>
+//         {/* <MovieList watched={subscription?.movieWatched} /> */}
+//     </>
+// }
+
+// // import Select from '@mui/joy/Select';
+// // import Option from '@mui/joy/Option';
+
+// // const MovieList = (watched) => {
+
+// //     return (
+// //         // <Select defaultValue="dog">
+// //         //     <Option value="dog">Dog</Option>
+// //         //     <Option value="cat">Cat</Option>
+// //         // </Select>
+// //     );
+// // }
