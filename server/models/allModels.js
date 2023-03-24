@@ -7,6 +7,7 @@ const movieSchema = new mongoose.Schema(
     image: String,
     premiered: String,
     summary: String,
+    subsWatches: [{}],
   },
   { versionKey: false }
 );
@@ -31,6 +32,7 @@ const subscriptionSchema = new mongoose.Schema(
   {
     memberID: String,
     movieWatched: [String],
+    dateWatched: [String],
   },
   { versionKey: false }
 );

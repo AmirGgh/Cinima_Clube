@@ -20,7 +20,6 @@ const SubscriptionsList = () => {
     const {
         data: subscriptions,
     } = useGetSubscriptionsQuery('getSubscriptions')
-    console.log(subscriptions)
 
     let content = 'k'
     if (isLoading) {

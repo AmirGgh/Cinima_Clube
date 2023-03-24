@@ -1,11 +1,62 @@
-import { Button, Card, CardActions, CardContent, CardMedia, ListItem, Paper, Typography, Select } from '@mui/material';
+import { Button, Card, CardActions, CardContent, Typography, Select, FormControl, InputLabel, MenuItem, Box } from '@mui/material';
 
 import { useState } from 'react';
 import { useGetSubscriptionsQuery, useGetMembersQuery } from './subscriptionsSlice'
-import { useGetMovieByIdQuery } from '../movies/moviesSlice';
+import { useGetMoviesQuery } from '../movies/moviesSlice';
 import MoviesWatched from './MoviesWatched';
+import Loading from '../../components/Loading';
+import Movie from '../movies/Movie';
+
+const MovieList = ({ newSubs, moviesWatched }) => {
+    const {
+        data: movies,
+        isLoading,
+        isSuccess,
+        isError,
+        error,
+        isUninitialized
+    } = useGetMoviesQuery('getMovies')
 
 
+    const [newMovie, setNewMovie] = useState('');
+
+    const handleChange = (event) => {
+        setNewMovie(event.target.value);
+        console.log(event.target.value)
+    };
+    let content;
+    if (isLoading) {
+        content = <Loading />
+    }
+
+    const filterMovieIds = movies?.ids.filter((id) => !moviesWatched?.includes(id))
+    return (
+        <Box sx={{ minWidth: 120 }}>
+            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                <InputLabel id="demo-select-small">New Movie</InputLabel>
+                <Select
+                    labelId="demo-select-small"
+                    id="demo-select-small"
+                    value={newMovie}
+                    label="Movie"
+                    onChange={handleChange}
+                >
+                    <MenuItem value="">
+                        <em>{newMovie}</em>
+                    </MenuItem>
+                    {
+                        filterMovieIds?.map((id, index) => (<MenuItem key={index} value={movies.entities[id]._id}>{movies.entities[id].name}</MenuItem>))
+                    }
+                    movies.entities[id].name
+
+                </Select>
+            </FormControl>
+            <br />
+            <Button onClick={newSubs}>cancel</Button>
+            <Button onClick={newSubs}>subscribe</Button>
+        </Box>
+    );
+}
 const Subscription = ({ id }) => {
     const { member } = useGetMembersQuery('getMembers', {
         selectFromResult: ({ data }) => ({
@@ -35,9 +86,10 @@ const Subscription = ({ id }) => {
                 <Typography > First Name: {member.firstName}{member.lastName}</Typography >
                 <Typography > Email: {member.email}</Typography >
                 <Typography > City: {member.city}</Typography >
-                <hr /> <CardActions>
+                <hr />
+                <CardActions>
                     {!newSubscribe && <Button size="small" onClick={newSubs}>subscribe to new move</Button>}
-
+                    {newSubscribe && <MovieList newSubs={newSubs} moviesWatched={subscription?.movieWatched} />}
                 </CardActions>
                 Movies Watched: {content && content}
 
@@ -49,21 +101,3 @@ const Subscription = ({ id }) => {
 
 export default Subscription
 
-// {newSubscribe &&
-//     <>
-//         {/* <MovieList watched={subscription?.movieWatched} /> */}
-//     </>
-// }
-
-// // import Select from '@mui/joy/Select';
-// // import Option from '@mui/joy/Option';
-
-// // const MovieList = (watched) => {
-
-// //     return (
-// //         // <Select defaultValue="dog">
-// //         //     <Option value="dog">Dog</Option>
-// //         //     <Option value="cat">Cat</Option>
-// //         // </Select>
-// //     );
-// // }

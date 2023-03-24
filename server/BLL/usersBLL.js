@@ -41,7 +41,7 @@ const addUser = async (obj) => {
   const member = { idUser: user.id, ...obj.member }
   await addUserJson(userJSON)
   await addPremissJson(permJSON)
-  if (member) await membersBLL.addMember(member)
+  if (member.firstName) await membersBLL.addMember(member)
   return 'Created!'
 };
 
@@ -55,13 +55,15 @@ const defineAdmin = async () => {
     await addUser({
       "username": "admin",
       "password": "ad1234",
-      "user": { "FirstName": "Admin", "LastName": "a", "SessionTimeOut": 10000 },
+      "user": { "FirstName": "Admin", "SessionTimeOut": 100000 },
       "permissions": { "userPremiss": ["CRUD Users", "View Subscriptions", "Create Subscriptions", "Delete Subscriptions", "View Movies", "Create Movies", "Delete Movies"] }
     })
     for (let user of data) {
+      // if (user.username !== 'admin') {
       let [username, password] = user.name.split(" ");
       let newUser = { "username": username, "password": password, "permissions": { "userPremiss": ["View Movies", "View Subscriptions", "Create Subscriptions"] }, "user": { "firstName": username, "lastName": password, "SessionTimeOut": 200 }, member: { ...user, "city": user.address.city, "firstName": username, "lastName": password } }
       await addUser(newUser)
+      // }
     }
 
   } else { console.log("All default users created!") }
