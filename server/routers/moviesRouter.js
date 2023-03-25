@@ -101,7 +101,7 @@ router.route('/:id').put(async (req, res) => {
     }
 
     // Check for 'Update Movie' permission
-    if (!decoded.permissions || !decoded.permissions.includes('Update Movie')) {
+    if (!decoded.permissions || !decoded.permissions.includes('Update Movies')) {
       return res.status(403).send({ auth: false, message: 'Access Forbidden' });
     }
 

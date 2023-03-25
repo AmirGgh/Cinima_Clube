@@ -8,6 +8,7 @@ const getAllMovies = async () => {
     const { data } = await getAllmoviesFirstTime()
     for (let mov of data) {
       mov = { ...mov, image: mov.image.medium }
+      mov.summary = mov.summary.replace(/<\/?p>/g, '').replace(/<\/?b>/g, '').replace(/,/g, '');
       const movieModel = new Movie(mov);
       await movieModel.save();
     }
@@ -25,19 +26,16 @@ const getMovieById = (id) => {
 const addMovie = async (obj) => {
   const mov = new Movie(obj);
   await mov.save();
-  return 'Created!';
 };
 
 // PUT - Update
 const updateMovie = async (id, obj) => {
   await Movie.findByIdAndUpdate(id, obj);
-  return 'Updated!';
 };
 
 // DELETE - Delete
 const deleteMovie = async (id) => {
   await Movie.findByIdAndDelete(id);
-  return 'Deleted!';
 };
 
 module.exports = {

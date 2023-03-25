@@ -18,6 +18,16 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 ...result.ids.map(id => ({ type: 'Movie', id }))
             ]
         }),
+        updateMovie: builder.mutation({
+            query: initialMovie => ({
+                url: `/movies/${initialMovie.id}`,
+                method: 'PUT',
+                body: initialMovie.body
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Movie', id: arg.id }
+            ]
+        }),
         deleteMovie: builder.mutation({
             query: ({ id }) => ({
                 url: `/movies/${id}`,
@@ -50,15 +60,5 @@ export const {
         //     }),
         //     invalidatesTags: [
         //         { type: 'Movie', id: "LIST" }
-        //     ]
-        // }),
-        // updateMovie: builder.mutation({
-        //     query: initialMovie => ({
-        //         url: `/movies/${initialMovie.id}`,
-        //         method: 'PUT',
-        //         body: movie
-        //     }),
-        //     invalidatesTags: (result, error, arg) => [
-        //         { type: 'Movie', id: arg.id }
         //     ]
         // }),

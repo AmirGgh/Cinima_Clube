@@ -12,6 +12,12 @@ export default function EditUser({ editUser, edit, user }) {
     const fieldsAdmin = [
         { label: 'Session time out in minutes', name: 'SessionTimeOut', type: 'number' },
     ]
+    const userDitails = { firstName: user.member?.firstName, lastName: user.member?.lastName, SessionTimeOut: user.usersData?.SessionTimeOut }
+
+    const updateUser = (data) => {
+        console.log("data");
+        console.log(data);
+    }
     return (
         <Modal open={editUser} onClose={edit}>
             <Box sx={styleModal} >
@@ -21,13 +27,13 @@ export default function EditUser({ editUser, edit, user }) {
                             Edit {user?.member.firstName || 'Admin'}
                         </Typography>
                         <br />
-                        <GenericForm typeForm={"Edit"} fields={fields} cancel={edit} user={user} />
+                        <GenericForm typeForm={"Edit"} fields={fields} cancel={edit} user={user} ditails={userDitails} onSubmit={updateUser} />
                     </>
                     :
                     <>
                         <Typography variant="h5" component="h2" gutterBottom>Edit Admin</Typography>
                         <br />
-                        <GenericForm typeForm={"Edit"} fields={fieldsAdmin} cancel={edit} user={user} />
+                        <GenericForm typeForm={"Edit"} fields={fieldsAdmin} cancel={edit} user={user} ditails={userDitails} onSubmit={updateUser} />
                     </>
                 }
             </Box>

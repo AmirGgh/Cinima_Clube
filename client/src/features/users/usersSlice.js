@@ -3,9 +3,6 @@ import { apiSlice } from "../api/apiSlice";
 
 const usersAdapter = createEntityAdapter()
 
-
-
-
 export const usersApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getUsers: builder.query({

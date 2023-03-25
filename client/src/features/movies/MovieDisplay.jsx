@@ -74,7 +74,7 @@ export default function MovieDisplay({ show, showMovie, movie }) {
                         <br />
                         <Stack direction="row" spacing={1}>
 
-                            {movie.genres.map((g) => (< Chip key={g} label={g} variant="outlined" />))}
+                            {movie?.genres.map((g) => (< Chip key={g} label={g} variant="outlined" />))}
 
                         </Stack>
 

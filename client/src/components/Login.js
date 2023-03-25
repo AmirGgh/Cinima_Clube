@@ -45,7 +45,7 @@ const Login = () => {
                     {!newUser ?
                         <>
                             <Typography variant="h6" component="h2"> Welcome! </Typography>
-                            <GenericForm typeForm={"login"} fields={fields} onSubmit={handleSubmit} />
+                            <GenericForm typeForm={"login"} fields={fields} onSubmit={handleSubmit} ditails={''} />
                         </> : <>
 
                             <CreateAccount cancel={creatUser} />

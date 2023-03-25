@@ -25,6 +25,7 @@ const Movie = ({ movieId }) => {
     const edit = () => {
         setEditMovie(!editMovie)
     }
+
     return (
         <Card sx={{
             my: 1,

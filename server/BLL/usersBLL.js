@@ -41,8 +41,7 @@ const addUser = async (obj) => {
   const member = { idUser: user.id, ...obj.member }
   await addUserJson(userJSON)
   await addPremissJson(permJSON)
-  if (member.firstName) await membersBLL.addMember(member)
-  return 'Created!'
+  await membersBLL.addMember(member)
 };
 
 //first serves starting
@@ -55,23 +54,20 @@ const defineAdmin = async () => {
     await addUser({
       "username": "admin",
       "password": "ad1234",
-      "user": { "FirstName": "Admin", "SessionTimeOut": 100000 },
-      "permissions": { "userPremiss": ["CRUD Users", "View Subscriptions", "Create Subscriptions", "Delete Subscriptions", "View Movies", "Create Movies", "Delete Movies"] }
+      "user": { "FirstName": "Admin", "LastName": "a", "SessionTimeOut": 10000 },
+      "permissions": { "userPremiss": ["CRUD Users", "View Subscriptions", "Create Subscriptions", "Delete Subscriptions", "View Movies", "Create Movies", "Update Movies", "Delete Movies"] }
     })
     for (let user of data) {
-      // if (user.username !== 'admin') {
       let [username, password] = user.name.split(" ");
-      let newUser = { "username": username, "password": password, "permissions": { "userPremiss": ["View Movies", "View Subscriptions", "Create Subscriptions"] }, "user": { "firstName": username, "lastName": password, "SessionTimeOut": 200 }, member: { ...user, "city": user.address.city, "firstName": username, "lastName": password } }
+      let newUser = { "username": username, "password": password, "permissions": { "userPremiss": ["View Subscriptions", "Create Subscriptions"] }, "user": { "firstName": username, "lastName": password, "SessionTimeOut": 200 }, member: { ...user, "city": user.address.city, "firstName": username, "lastName": password } }
       await addUser(newUser)
-      // }
     }
 
-  } else { console.log("All default users created!") }
+  } else { console.log("All default users created!"); return; }
 }
 //  Update - username, first + last name, premissions, sessions 
 const updateUser = async (id, obj) => {
   await User.findByIdAndUpdate(id, obj);
-  return 'Updated!';
 };
 
 // DELETE - Delete db -> user + subscripions,  jsons
@@ -79,7 +75,6 @@ const deleteUser = async (id) => {
   await User.findByIdAndDelete(id);
   deletePremissJson(id)
   deleteUserJson(id)
-  return 'Deleted!';
 };
 
 module.exports = {

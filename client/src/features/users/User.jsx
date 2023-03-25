@@ -24,6 +24,7 @@ const User = ({ id }) => {
     }
 
 
+
     return (
         <Card sx={{
             my: 1,
@@ -33,8 +34,8 @@ const User = ({ id }) => {
                 {user.member ? <>
                     <Typography variant='h5' > {user.member.firstName} {user.member.lastName}</Typography >
                     <Typography > Username: {user.username}</Typography >
-                    <Typography > Email: {user.member.email}</Typography >
-                    <Typography > City: {user.member.city}</Typography >
+                    <Typography > Email: {user?.member.email}</Typography >
+                    <Typography > City: {user?.member.city}</Typography >
                 </> : <>
                     <Typography variant='h5' >Admin</Typography>
                     <Typography > Username: {user.username}</Typography >

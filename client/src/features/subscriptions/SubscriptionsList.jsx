@@ -25,7 +25,7 @@ const SubscriptionsList = () => {
     if (isLoading) {
         content = <Loading />
     } else if (isSuccess) {
-        content = members.ids.map(id => <Subscription key={id} id={id} />)
+        content = members.ids.filter((id) => members.entities[id].firstName).map(id => <Subscription key={id} id={id} />)
 
     } else if (isError) {
         content = <p>{error}</p>;

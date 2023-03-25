@@ -5,9 +5,8 @@ import { useGetSubscriptionsQuery, useGetMembersQuery } from './subscriptionsSli
 import { useGetMoviesQuery } from '../movies/moviesSlice';
 import MoviesWatched from './MoviesWatched';
 import Loading from '../../components/Loading';
-import Movie from '../movies/Movie';
 
-const MovieList = ({ newSubs, moviesWatched }) => {
+const MovieList = ({ newSubs, moviesWatched, id }) => {
     const {
         data: movies,
         isLoading,
@@ -22,7 +21,7 @@ const MovieList = ({ newSubs, moviesWatched }) => {
 
     const handleChange = (event) => {
         setNewMovie(event.target.value);
-        console.log(event.target.value)
+        console.log({ id: id, body: event.target.value })
     };
     let content;
     if (isLoading) {
@@ -47,7 +46,6 @@ const MovieList = ({ newSubs, moviesWatched }) => {
                     {
                         filterMovieIds?.map((id, index) => (<MenuItem key={index} value={movies.entities[id]._id}>{movies.entities[id].name}</MenuItem>))
                     }
-                    movies.entities[id].name
 
                 </Select>
             </FormControl>
@@ -89,12 +87,10 @@ const Subscription = ({ id }) => {
                 <hr />
                 <CardActions>
                     {!newSubscribe && <Button size="small" onClick={newSubs}>subscribe to new move</Button>}
-                    {newSubscribe && <MovieList newSubs={newSubs} moviesWatched={subscription?.movieWatched} />}
+                    {newSubscribe && <MovieList newSubs={newSubs} moviesWatched={subscription?.movieWatched} id={id} />}
                 </CardActions>
                 Movies Watched: {content && content}
-
             </CardContent>
-
         </Card >
     )
 }
