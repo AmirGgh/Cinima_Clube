@@ -7,7 +7,7 @@ const movieSchema = new mongoose.Schema(
     image: String,
     premiered: String,
     summary: String,
-    subsWatches: [{}],
+    subsWatches: [],
   },
   { versionKey: false }
 );
@@ -25,14 +25,14 @@ const memberSchema = new mongoose.Schema(
     lastName: String,
     email: String,
     city: String,
+
   },
   { versionKey: false }
 );
 const subscriptionSchema = new mongoose.Schema(
   {
     memberID: String,
-    movieWatched: [String],
-    dateWatched: [String],
+    movieWatched: [],
   },
   { versionKey: false }
 );

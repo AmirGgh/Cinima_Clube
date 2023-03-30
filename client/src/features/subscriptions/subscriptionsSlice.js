@@ -1,7 +1,7 @@
 import { createEntityAdapter } from "@reduxjs/toolkit";
 import { sub } from 'date-fns';
 import { apiSlice } from "../api/apiSlice";
-
+// slice of members and subscriptions
 const subscriptionsAdapter = createEntityAdapter(
     {
         selectId: (subscription) => subscription.memberID
@@ -29,7 +29,6 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         getMembers: builder.query({
             query: () => '/members',
             transformResponse: responseData => {
-
                 return membersAdapter.setAll(membersAdapter.getInitialState(), responseData)
             },
             providesTags: (result, error, arg) => [
@@ -37,36 +36,38 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 ...result.ids.map(id => ({ type: 'Member', id }))
             ]
         }),
-        // getSubscriptionByMemberId: builder.query({
-        //     query: (memberId) => `/subscriptions/?memberID=${memberId}`,
-        //     transformResponse: (responseData) => {
-        //         // transform the response as needed
-        //         return responseData;
-        //     },
-        //     providesTags: (result, error, arg) => [
-        //         { type: 'Subscription', id: result ? result._id : arg },
-        //     ],
-        // }),
-        // addNewMovie: builder.mutation({
-        //     query: initialMovie => ({
-        //         url: '/movies',
-        //         method: 'POST',
-        //         body: movie
-        //     }),
-        //     invalidatesTags: [
-        //         { type: 'Movie', id: "LIST" }
-        //     ]
-        // }),
-        // updateMovie: builder.mutation({
-        //     query: initialMovie => ({
-        //         url: `/movies/${initialMovie.id}`,
-        //         method: 'PUT',
-        //         body: movie
-        //     }),
-        //     invalidatesTags: (result, error, arg) => [
-        //         { type: 'Movie', id: arg.id }
-        //     ]
-        // }),
+        updateMember: builder.mutation({
+            query: initialMember => ({
+                url: `/Members/${initialMember.id}`,
+                method: 'PUT',
+                body: initialMember.body
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Member', id: arg.id }
+            ]
+        }),
+        addNewSubscription: builder.mutation({
+            query: initialSubscriptions => ({
+                url: '/subscriptions',
+                method: 'POST',
+                body: initialSubscriptions.body
+            }),
+            invalidatesTags: [
+                { type: 'Subscription', id: "LIST" }
+            ]
+        }),
+
+        updateSubscriptions: builder.mutation({
+            query: initialSubscriptions => ({
+                url: `/subscriptions/${initialSubscriptions.id}`,
+                method: 'PUT',
+                body: initialSubscriptions.body
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Subscription', id: arg.id }
+            ]
+        }),
+
         // deleteMovie: builder.mutation({
         //     query: ({ id }) => ({
         //         url: `/movies/${id}`,
@@ -80,12 +81,12 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
     })
 })
 
-// useGetMoviesByUserIdQuery,
 export const {
     useGetSubscriptionsQuery,
     useGetMembersQuery,
     useAddNewSubscriptionMutation,
-    useUpdateSubscriptionMutation,
+    useUpdateSubscriptionsMutation,
+    useUpdateMemberMutation,
     useDeleteSubscriptionMutation,
 } = extendedApiSlice
 

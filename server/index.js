@@ -24,7 +24,6 @@ app.use('/auth', authController);
 app.use('/movies', moviesRouter);
 app.use('/members', membersRouter);
 app.use('/users', usersRouter);
-app.use('/users/allUsers', usersRouter);
 app.use('/subscriptions', subscriptionsRouter);
 app.use('/jsonPremi', jsonPremiRouter);
 app.use('/jsonData', jsonDataRouter);

@@ -1,12 +1,13 @@
 import { Button, Card, CardActions, CardContent, Typography, Select, FormControl, InputLabel, MenuItem, Box } from '@mui/material';
 
 import { useState } from 'react';
-import { useGetSubscriptionsQuery, useGetMembersQuery } from './subscriptionsSlice'
-import { useGetMoviesQuery } from '../movies/moviesSlice';
+import { useGetSubscriptionsQuery, useGetMembersQuery, useAddNewSubscriptionMutation, useUpdateSubscriptionsMutation, useUpdateMemberMutation } from './subscriptionsSlice'
+import { useGetMoviesQuery, useUpdateMovieMutation } from '../movies/moviesSlice';
 import MoviesWatched from './MoviesWatched';
 import Loading from '../../components/Loading';
 
-const MovieList = ({ newSubs, moviesWatched, id }) => {
+const MovieList = ({ newSubs, subscribeID, memberID, memberSubs, subscriptionWatched }) => {
+    console.log(subscribeID)
     const {
         data: movies,
         isLoading,
@@ -15,20 +16,43 @@ const MovieList = ({ newSubs, moviesWatched, id }) => {
         error,
         isUninitialized
     } = useGetMoviesQuery('getMovies')
-
+    const [newSubscribe] = useAddNewSubscriptionMutation()// in subscriptions
+    const [updateSubscribe] = useUpdateSubscriptionsMutation()// in subscriptions
+    const [updateMovieSubscriptions] = useUpdateMovieMutation() // in movie
 
     const [newMovie, setNewMovie] = useState('');
 
     const handleChange = (event) => {
         setNewMovie(event.target.value);
-        console.log({ id: id, body: event.target.value })
     };
+
+
+    const subscribeMovie = async () => {
+        const date = new Date().toDateString();
+        if (!memberSubs) {
+            try {
+                const subs = await newSubscribe({ body: { memberID: memberID, movieWatched: [{ movieID: newMovie, date }] } }).unwrap()
+                if (subs) {
+
+                    await updateMovieSubscriptions({ id: newMovie, body: { subsWatches: { movieID: newMovie, date } } }).unwrap()
+                }
+            } catch (err) {
+                console.error('Failed to edit the subscribe', err)
+            }
+        } else if (!!memberSubs) {
+            console.log("subs exist!")
+        }
+        newSubs()
+    }
+
     let content;
     if (isLoading) {
         content = <Loading />
     }
 
-    const filterMovieIds = movies?.ids.filter((id) => !moviesWatched?.includes(id))
+
+    const filterMovieIds = movies?.ids.filter((id) => !subscriptionWatched?.movieWatched?.find((mWatch) => mWatch.movieID === id))
+
     return (
         <Box sx={{ minWidth: 120 }}>
             <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -51,10 +75,11 @@ const MovieList = ({ newSubs, moviesWatched, id }) => {
             </FormControl>
             <br />
             <Button onClick={newSubs}>cancel</Button>
-            <Button onClick={newSubs}>subscribe</Button>
+            <Button onClick={subscribeMovie}>subscribe</Button>
         </Box>
     );
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 const Subscription = ({ id }) => {
     const { member } = useGetMembersQuery('getMembers', {
         selectFromResult: ({ data }) => ({
@@ -72,8 +97,8 @@ const Subscription = ({ id }) => {
     }
 
     let content
-    if (subscription) {
-        content = subscription?.movieWatched.map((id, index) => <MoviesWatched date={subscription.dateWatched[index]} key={id} id={id} />)
+    if (subscription?.movieWatched) {
+        content = subscription.movieWatched.map((movie, index) => <MoviesWatched date={movie.date} key={movie.movieID} id={movie.movieID} />)
     }
     return (
         <Card sx={{
@@ -87,7 +112,7 @@ const Subscription = ({ id }) => {
                 <hr />
                 <CardActions>
                     {!newSubscribe && <Button size="small" onClick={newSubs}>subscribe to new move</Button>}
-                    {newSubscribe && <MovieList newSubs={newSubs} moviesWatched={subscription?.movieWatched} id={id} />}
+                    {newSubscribe && <MovieList newSubs={newSubs} memberID={id} subscriptionWatched={subscription} />}
                 </CardActions>
                 Movies Watched: {content && content}
             </CardContent>

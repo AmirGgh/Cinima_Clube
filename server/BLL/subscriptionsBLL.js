@@ -1,5 +1,4 @@
-const { Subscription } = require('../models/allModels');
-
+const { Subscription, Movie, Member } = require('../models/allModels');
 // GET - Get All - Read
 const getAllSubscriptions = async () => {
   let subscriptions = await Subscription.find({})
@@ -11,23 +10,25 @@ const getSubscriptionById = (id) => {
   return Subscription.findById({ _id: id });
 };
 
-// POST - Create
+// POST - Create - first subscription
 const addSubscription = async (obj) => {
   const subs = new Subscription(obj);
-  await subs.save();
-  return 'Created!';
+  const res = await subs.save();
+  return res
 };
 
-// PUT - Update
+// PATCH - Update - add to data
 const updateSubscription = async (id, obj) => {
-  await Subscription.findByIdAndUpdate(id, obj);
-  return 'Updated!';
-};
+  await Subscription.findOneAndUpdate(
+    { _id: id },
+    { $push: { movieWatched: obj } },
+    { new: true }
+  );
+}
 
 // DELETE - Delete
 const deleteSubscription = async (id) => {
   await Subscription.findByIdAndDelete(id);
-  return 'Deleted!';
 };
 
 module.exports = {

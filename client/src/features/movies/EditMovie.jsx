@@ -14,8 +14,6 @@ export default function EditMovie({ editMovie, edit, movie }) {
     const [updateMovie] = useUpdateMovieMutation()
     const [deleteMovie] = useDeleteMovieMutation()
     const updateThisMovie = async (data) => {
-        console.log(movie)
-
         if (data.genres) data.genres = data.genres.split(",")
         if (data) {
             try {

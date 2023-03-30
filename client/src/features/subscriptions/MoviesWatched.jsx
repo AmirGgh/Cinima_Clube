@@ -14,7 +14,6 @@ export default function MoviesWatched({ id, date }) {
             movie: data?.entities[id]
         }),
     })
-
     let label = `${movie?.name} - ${date}`
     return (
         <div>

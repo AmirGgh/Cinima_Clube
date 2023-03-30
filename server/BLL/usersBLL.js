@@ -55,7 +55,7 @@ const defineAdmin = async () => {
       "username": "admin",
       "password": "ad1234",
       "user": { "FirstName": "Admin", "LastName": "a", "SessionTimeOut": 10000 },
-      "permissions": { "userPremiss": ["CRUD Users", "View Subscriptions", "Create Subscriptions", "Delete Subscriptions", "View Movies", "Create Movies", "Update Movies", "Delete Movies"] }
+      "permissions": { "userPremiss": ["CRUD Users", "View Subscriptions", "Create Subscriptions", "Update Subscriptions", "Delete Subscriptions", "View Movies", "Create Movies", "Update Movies", "Delete Movies"] }
     })
     for (let user of data) {
       let [username, password] = user.name.split(" ");

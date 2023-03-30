@@ -18,6 +18,17 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 ...result.ids.map(id => ({ type: 'Movie', id }))
             ]
         }),
+        getUnwatchedMovies: builder.query({
+            query: () => '/movies',
+            transformResponse: responseData => {
+                let unwatched = responseData
+                return moviesAdapter.setAll(moviesAdapter.getInitialState(), responseData)
+            },
+            providesTags: (result, error, arg) => [
+                { type: 'Movie', id: "LIST" },
+                ...result.ids.map(id => ({ type: 'Movie', id }))
+            ]
+        }),
         updateMovie: builder.mutation({
             query: initialMovie => ({
                 url: `/movies/${initialMovie.id}`,
@@ -26,6 +37,16 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: (result, error, arg) => [
                 { type: 'Movie', id: arg.id }
+            ]
+        }),
+        addNewMovie: builder.mutation({
+            query: initialMovie => ({
+                url: '/movies',
+                method: 'POST',
+                body: initialMovie.body
+            }),
+            invalidatesTags: [
+                { type: 'Movie', id: "LIST" }
             ]
         }),
         deleteMovie: builder.mutation({
@@ -52,13 +73,3 @@ export const {
 
 
 
-        // addNewMovie: builder.mutation({
-        //     query: initialMovie => ({
-        //         url: '/movies',
-        //         method: 'POST',
-        //         body: movie
-        //     }),
-        //     invalidatesTags: [
-        //         { type: 'Movie', id: "LIST" }
-        //     ]
-        // }),

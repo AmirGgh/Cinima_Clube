@@ -6,7 +6,6 @@ import Subscription from './Subscription';
 import { useGetSubscriptionsQuery, useGetMembersQuery } from './subscriptionsSlice'
 
 const SubscriptionsList = () => {
-
     const {
         data: members,
         isLoading,
@@ -17,15 +16,12 @@ const SubscriptionsList = () => {
     } = useGetMembersQuery('getMembers')
     // console.log(members)
 
-    const {
-        data: subscriptions,
-    } = useGetSubscriptionsQuery('getSubscriptions')
 
-    let content = 'k'
+    let content
     if (isLoading) {
         content = <Loading />
     } else if (isSuccess) {
-        content = members.ids.filter((id) => members.entities[id].firstName).map(id => <Subscription key={id} id={id} />)
+        content = members.ids.filter((id) => members.entities[id].firstName).map(id => <Subscription key={id} id={id} memberSubs={members.entities[id]} />)
 
     } else if (isError) {
         content = <p>{error}</p>;

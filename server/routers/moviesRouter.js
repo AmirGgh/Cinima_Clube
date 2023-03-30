@@ -112,6 +112,32 @@ router.route('/:id').put(async (req, res) => {
     res.status(200).send(result);
   });
 });
+// Update  movie subscriptions
+router.route('/movSub/:id').put(async (req, res) => {
+
+  const PRIVATE_KEY = 'somekey';
+  const token = req.headers['x-access-token'];
+  if (!token) {
+    return res.status(401).send({ auth: false, message: 'No Token Provided' });
+  }
+
+  jwt.verify(token, PRIVATE_KEY, async (err, decoded) => {
+    if (err) {
+      return res.status(500).send({ auth: false, message: 'Failed To authenticate' });
+    }
+
+    // Check for 'Update Movie' permission
+    if (!decoded.permissions || !decoded.permissions.includes('Update Movies')) {
+      return res.status(403).send({ auth: false, message: 'Access Forbidden' });
+    }
+
+    // Only allow access if 'Update Movie' permission is present
+    const { id } = req.params;
+    const obj = req.body;
+    const result = await moviesBLL.updateSubsWatches(id, obj);;
+    res.status(200).send(result);
+  });
+});
 
 // Delete a movie
 router.route('/:id').delete(async (req, res) => {

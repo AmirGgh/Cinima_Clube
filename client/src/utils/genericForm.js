@@ -79,7 +79,7 @@ function GenericForm({ onSubmit, fields, movie, user, typeForm, cancel, ditails 
                 '& .MuiTextField-root': { m: 1, width: '25ch' },
             }} >
             {fields.map(field => (
-                <TextField sx={styleTextInput} key={field?.name} name={field?.name} defaultValue={ditails[field?.name]} label={field.label} variant="outlined" onChange={handleChange} />
+                <TextField sx={styleTextInput} type={field.type} key={field?.name} name={field?.name} defaultValue={ditails[field?.name]} label={field.label} variant="outlined" onChange={handleChange} />
             ))}
             {movie && (<TextField
                 sx={styleTextInput} label="summary"
