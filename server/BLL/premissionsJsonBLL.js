@@ -16,7 +16,6 @@ const addPremissJson = async (obj) => {
     const permissions = await getAllPremissJson()
     permissions.push(obj)
     await PremissFile.setPremissJSON({ "permissions": permissions })
-    return "added!"
 }
 
 // update ONLY the userPremiss array ***

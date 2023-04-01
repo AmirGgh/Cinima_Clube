@@ -1,5 +1,8 @@
 const userFile = require('../DALS/jsonUserDAL')
 
+// const { dateDDMMYY } = require('../Utils/dateDDMMYY')
+// dateDDMMYY()
+
 const getAllUsersJson = async () => {
     const { users } = await userFile.getUserJSON()
     return users
@@ -26,7 +29,7 @@ const updateUserJson = async (id, obj) => {
         users[userIndex] = obj
         return await userFile.setUserJSON({ "users": users })
     } else {
-        return 'user not found'
+        return false
     }
 }
 const deleteUserJson = async (id) => {

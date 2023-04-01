@@ -17,13 +17,14 @@ const addSubscription = async (obj) => {
   return res
 };
 
-// PATCH - Update - add to data
+// PUT - Update - add to data
 const updateSubscription = async (id, obj) => {
-  await Subscription.findOneAndUpdate(
+  const res = await Subscription.findOneAndUpdate(
     { _id: id },
     { $push: { movieWatched: obj } },
     { new: true }
   );
+  return res
 }
 
 // DELETE - Delete

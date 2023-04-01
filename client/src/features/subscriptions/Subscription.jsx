@@ -1,13 +1,13 @@
 import { Button, Card, CardActions, CardContent, Typography, Select, FormControl, InputLabel, MenuItem, Box } from '@mui/material';
 
 import { useState } from 'react';
-import { useGetSubscriptionsQuery, useGetMembersQuery, useAddNewSubscriptionMutation, useUpdateSubscriptionsMutation, useUpdateMemberMutation } from './subscriptionsSlice'
-import { useGetMoviesQuery, useUpdateMovieMutation } from '../movies/moviesSlice';
+import { useGetSubscriptionsQuery, useGetMembersQuery, useAddNewSubscriptionMutation, useUpdateSubscriptionsMutation } from './subscriptionsSlice'
+import { useGetMoviesQuery, useUpdateSubsMovieMutation } from '../movies/moviesSlice';
 import MoviesWatched from './MoviesWatched';
 import Loading from '../../components/Loading';
+import { dateDDMMYY } from '../../utils/dateDDMMYY';
 
-const MovieList = ({ newSubs, subscribeID, memberID, memberSubs, subscriptionWatched }) => {
-    console.log(subscribeID)
+const MovieList = ({ newSubs, memberID, subscriptionWatched }) => {
     const {
         data: movies,
         isLoading,
@@ -18,7 +18,7 @@ const MovieList = ({ newSubs, subscribeID, memberID, memberSubs, subscriptionWat
     } = useGetMoviesQuery('getMovies')
     const [newSubscribe] = useAddNewSubscriptionMutation()// in subscriptions
     const [updateSubscribe] = useUpdateSubscriptionsMutation()// in subscriptions
-    const [updateMovieSubscriptions] = useUpdateMovieMutation() // in movie
+    const [updateMovieSubscriptions] = useUpdateSubsMovieMutation() // in movie
 
     const [newMovie, setNewMovie] = useState('');
 
@@ -28,19 +28,25 @@ const MovieList = ({ newSubs, subscribeID, memberID, memberSubs, subscriptionWat
 
 
     const subscribeMovie = async () => {
-        const date = new Date().toDateString();
-        if (!memberSubs) {
+        let date = dateDDMMYY()
+        if (!subscriptionWatched?.memberID) {
             try {
-                const subs = await newSubscribe({ body: { memberID: memberID, movieWatched: [{ movieID: newMovie, date }] } }).unwrap()
+                const subs = await newSubscribe({ id: newMovie, body: { memberID, movieWatched: [{ movieID: newMovie, date }] } }).unwrap()
                 if (subs) {
-
-                    await updateMovieSubscriptions({ id: newMovie, body: { subsWatches: { movieID: newMovie, date } } }).unwrap()
+                    await updateMovieSubscriptions({ id: newMovie, body: { memberID, date } }).unwrap()
                 }
             } catch (err) {
                 console.error('Failed to edit the subscribe', err)
             }
-        } else if (!!memberSubs) {
-            console.log("subs exist!")
+        } else {
+            try {
+                const subs = await updateSubscribe({ id: subscriptionWatched._id, body: { movieID: newMovie, date } }).unwrap()
+                if (subs) {
+                    await updateMovieSubscriptions({ id: newMovie, body: { memberID, date } }).unwrap()
+                }
+            } catch (err) {
+                console.error('Failed to edit the subscribe', err)
+            }
         }
         newSubs()
     }
@@ -68,7 +74,7 @@ const MovieList = ({ newSubs, subscribeID, memberID, memberSubs, subscriptionWat
                         <em>{newMovie}</em>
                     </MenuItem>
                     {
-                        filterMovieIds?.map((id, index) => (<MenuItem key={index} value={movies.entities[id]._id}>{movies.entities[id].name}</MenuItem>))
+                        filterMovieIds?.map((id, index) => (<MenuItem key={index} value={id}>{movies.entities[id].name}</MenuItem>))
                     }
 
                 </Select>
@@ -104,14 +110,15 @@ const Subscription = ({ id }) => {
         <Card sx={{
             my: 1,
             mx: 1
-        }} >
+        }}
+            key={member._id}>
             <CardContent>
                 <Typography > First Name: {member.firstName}{member.lastName}</Typography >
                 <Typography > Email: {member.email}</Typography >
                 <Typography > City: {member.city}</Typography >
                 <hr />
                 <CardActions>
-                    {!newSubscribe && <Button size="small" onClick={newSubs}>subscribe to new move</Button>}
+                    {!newSubscribe && <Button size="small" onClick={newSubs}>subscribe to new movie</Button>}
                     {newSubscribe && <MovieList newSubs={newSubs} memberID={id} subscriptionWatched={subscription} />}
                 </CardActions>
                 Movies Watched: {content && content}

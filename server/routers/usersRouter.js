@@ -79,8 +79,6 @@ router.route('/:id').get(async (req, res) => {
     const user = await usesrsBLL.getUserById(id);
     res.status(200).send(user);
   });
-
-
 });
 
 // Add a user

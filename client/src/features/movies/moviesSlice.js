@@ -39,6 +39,16 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 { type: 'Movie', id: arg.id }
             ]
         }),
+        updateSubsMovie: builder.mutation({
+            query: initialMovie => ({
+                url: `/movies/movSub/${initialMovie.id}`,
+                method: 'PUT',
+                body: initialMovie.body
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Movie', id: arg.id }
+            ]
+        }),
         addNewMovie: builder.mutation({
             query: initialMovie => ({
                 url: '/movies',
@@ -67,6 +77,7 @@ export const {
     useGetMoviesQuery,
     useAddNewMovieMutation,
     useUpdateMovieMutation,
+    useUpdateSubsMovieMutation,
     useDeleteMovieMutation,
 } = extendedApiSlice
 

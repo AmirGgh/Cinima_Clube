@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema(
   {
     username: String,
     password: String,
+    memberID: String,
   },
   { versionKey: false }
 );
@@ -25,7 +26,6 @@ const memberSchema = new mongoose.Schema(
     lastName: String,
     email: String,
     city: String,
-
   },
   { versionKey: false }
 );
@@ -43,3 +43,5 @@ const User = mongoose.model('user', userSchema);
 const Subscription = mongoose.model('subscription', subscriptionSchema);
 
 module.exports = { Movie, Member, User, Subscription }
+
+

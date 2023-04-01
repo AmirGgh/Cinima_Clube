@@ -38,7 +38,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         }),
         updateMember: builder.mutation({
             query: initialMember => ({
-                url: `/Members/${initialMember.id}`,
+                url: `/members/${initialMember.id}`,
                 method: 'PUT',
                 body: initialMember.body
             }),
@@ -63,21 +63,20 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 method: 'PUT',
                 body: initialSubscriptions.body
             }),
-            invalidatesTags: (result, error, arg) => [
-                { type: 'Subscription', id: arg.id }
+            invalidatesTags: [
+                { type: 'Subscription', id: "LIST" }
             ]
         }),
-
-        // deleteMovie: builder.mutation({
-        //     query: ({ id }) => ({
-        //         url: `/movies/${id}`,
-        //         method: 'DELETE',
-        //         body: id
-        //     }),
-        //     invalidatesTags: (result, error, arg) => [
-        //         { type: 'Movie', id: arg.id }
-        //     ]
-        // })
+        deleteMembers: builder.mutation({
+            query: ({ id }) => ({
+                url: `/members/${id}`,
+                method: 'DELETE',
+                body: id
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Members', id: arg.id }
+            ]
+        })
     })
 })
 
@@ -87,6 +86,7 @@ export const {
     useAddNewSubscriptionMutation,
     useUpdateSubscriptionsMutation,
     useUpdateMemberMutation,
+    useDeleteMembersMutation,
     useDeleteSubscriptionMutation,
 } = extendedApiSlice
 

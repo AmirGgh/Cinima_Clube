@@ -12,6 +12,6 @@ export const apiSlice = createApi({
             return headers;
         },
     }),
-    tagTypes: ['Movie', 'User', 'Subscription'],
+    tagTypes: ['Movie', 'User', 'Subscription', 'Member', 'Permission', 'JsonUser', 'NewUsers'],
     endpoints: builder => ({})
 }) 

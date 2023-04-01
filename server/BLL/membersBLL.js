@@ -22,7 +22,7 @@ const getMemberById = (id) => {
 const addMember = async (obj) => {
     const mem = new Member(obj);
     await mem.save();
-    return 'Created!';
+    return mem.id;
 };
 
 // PUT - Update

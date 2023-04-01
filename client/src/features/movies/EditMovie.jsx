@@ -17,7 +17,6 @@ export default function EditMovie({ editMovie, edit, movie }) {
         if (data.genres) data.genres = data.genres.split(",")
         if (data) {
             try {
-                console.log(data)
                 await updateMovie({ id: movie._id, body: data }).unwrap()
             } catch (err) {
                 console.error('Failed to edit the movie', err)
@@ -36,13 +35,12 @@ export default function EditMovie({ editMovie, edit, movie }) {
     }
     return (
         <Modal open={editMovie} onClose={edit}>
-            <Box sx={styleModal} >
+            <Box sx={styleModal}  >
                 <Typography variant="h5" component="h2" gutterBottom>
                     {movie.name}
                 </Typography>
                 <br />
-                <GenericForm typeForm={"Edit"} fields={fields} ditails={movie} movie={true} cancel={edit} onSubmit={updateThisMovie} />
-                <Button onClick={deleteThisMovie}>delete</Button>
+                <GenericForm typeForm={"Edit"} fields={fields} ditails={movie} movie={true} cancel={edit} onSubmit={updateThisMovie} deleteObj={deleteThisMovie} />
             </Box>
         </Modal>
     )

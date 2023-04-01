@@ -3,8 +3,9 @@ import TextField from '@mui/material/TextField';
 import { Button, Box, FormGroup, FormControlLabel, Checkbox, FormControl, FormLabel } from '@mui/material';
 import authService from '../utils/authService'
 import { styleTextInput } from './theme';
+import { useGetJsonPremiQuery } from '../features/users/usersSlice';
 
-function GenericForm({ onSubmit, fields, movie, user, typeForm, cancel, ditails }) {
+function GenericForm({ onSubmit, fields, movie, user, typeForm, cancel, ditails, deleteObj }) {
     const [formData, setFormData] = useState({});
     const [EditPremiss, setEditPremiss] = useState(false);
     const initialPremissions = [
@@ -17,9 +18,15 @@ function GenericForm({ onSubmit, fields, movie, user, typeForm, cancel, ditails 
         { key: "Delete Movies", value: false }
     ]
     const [premissions, setPremissions] = useState(initialPremissions);
+    const { JsonPremi } = useGetJsonPremiQuery('getJsonPremi', {
+        selectFromResult: ({ data }) => ({
+            JsonPremi: data?.entities[user?._id]
+        }),
+    })
+
     const userPremissions = () => {
         let update;
-        update = premissions.map(premission => user.premissions.includes(premission.key) ? { key: premission.key, value: true } : premission);
+        update = premissions.map(premission => JsonPremi?.userPremiss.includes(premission.key) ? { key: premission.key, value: true } : premission);
         setPremissions(update)
     }
 
@@ -39,7 +46,6 @@ function GenericForm({ onSubmit, fields, movie, user, typeForm, cancel, ditails 
         }
 
         const updatedPremissions = premissions.map((premission, index) => premission.key === key ? { ...premission, value } : premission);
-
         // update permissions display
         setPremissions(updatedPremissions);
         // update permissions array, cheng  with redux
@@ -48,6 +54,7 @@ function GenericForm({ onSubmit, fields, movie, user, typeForm, cancel, ditails 
             ...prevState,
             premissions: userUpdate
         }));
+
     };
 
     const editPremiss = () => {
@@ -78,8 +85,8 @@ function GenericForm({ onSubmit, fields, movie, user, typeForm, cancel, ditails 
             sx={{
                 '& .MuiTextField-root': { m: 1, width: '25ch' },
             }} >
-            {fields.map(field => (
-                <TextField sx={styleTextInput} type={field.type} key={field?.name} name={field?.name} defaultValue={ditails[field?.name]} label={field.label} variant="outlined" onChange={handleChange} />
+            {fields?.map(field => (
+                <TextField sx={styleTextInput} type={field.type} key={field?.name} name={field?.name} defaultValue={ditails[field?.name] ? ditails[field?.name] : ''} label={field?.label} variant="outlined" onChange={handleChange} />
             ))}
             {movie && (<TextField
                 sx={styleTextInput} label="summary"
@@ -108,12 +115,14 @@ function GenericForm({ onSubmit, fields, movie, user, typeForm, cancel, ditails 
             <br />
             <br />
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexGrow: 1 }}>
-                <Button sx={{ margin: 'auto' }} variant="contained" onClick={handleSubmit}>{typeForm}</Button>
+                <Button sx={{ margin: '0.5rem' }} variant="contained" onClick={handleSubmit}>{typeForm}</Button>
                 {cancel && <Button sx={{ margin: 'auto' }} variant="contained" onClick={cancel}>cancel</Button>}
+                {deleteObj && <Button sx={{ margin: '0.5rem', '&:hover': { background: '#ff0000' } }} variant="contained" onClick={deleteObj}>delete</Button>}
             </Box>
         </Box>
     );
 }
+
 
 export default GenericForm;
 

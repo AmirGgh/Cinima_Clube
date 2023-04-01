@@ -16,18 +16,17 @@ export default function CreateAccount({ cancel }) {
         { label: 'Username', name: 'username', type: 'text' },
         { label: 'Password', name: 'password', type: 'password' }]
 
-
-
+    const curUser = { name: '', password: '' }
     const handleSubmit = async ({ username, password }) => {
-        //     authService.login(username, password)
-        //         .then(res => {
-        //             if (res.status == 200) {
-        //                 authService.saveToken(res.data.token)
-        //                 authService.saveId(res.data.id)
-        //                 authService.saveRole(res.data.role)
-        //                 navigate('/movies')
-        //             }
-        //         })
+        authService.login(username, password)
+            .then(res => {
+                if (res.status == 200) {
+                    authService.saveToken(res.data.token)
+                    authService.saveId(res.data.id)
+                    authService.saveRole(res.data.role)
+                    navigate('/movies')
+                }
+            })
     };
     // --------------------------------------------- > create root for new users- have a username + need to replace password
 
@@ -40,7 +39,7 @@ export default function CreateAccount({ cancel }) {
             >
                 <Box sx={styleModal} >
                     <Typography variant="h6" component="h2"> Create New User </Typography>
-                    <GenericForm typeForm={"create"} fields={fields} onSubmit={handleSubmit} cancel={cancel} />
+                    <GenericForm typeForm={"create"} fields={fields} onSubmit={handleSubmit} cancel={cancel} ditails={curUser} />
                 </Box>
             </Modal>
         </div>

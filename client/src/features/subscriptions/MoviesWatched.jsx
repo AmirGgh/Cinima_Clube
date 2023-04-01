@@ -5,6 +5,7 @@ import { useGetMoviesQuery } from '../movies/moviesSlice';
 
 
 export default function MoviesWatched({ id, date }) {
+    // console.log(id, date)
     const [showMovie, setShowMovie] = useState(false)
     const show = () => {
         setShowMovie(!showMovie)
@@ -18,7 +19,7 @@ export default function MoviesWatched({ id, date }) {
     return (
         <div>
             <Chip label={label} variant="outlined" onClick={show} />
-            {showMovie && <MovieDisplay show={show} showMovie={showMovie} movie={movie} />
+            {showMovie && <MovieDisplay show={show} showMovie={showMovie} movie={movie} key={id} />
             }
         </div>
     )

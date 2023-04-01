@@ -24,7 +24,7 @@ const MoviesList = () => {
     else if (isSuccess) {
         content = movies.ids.map(movieId => <Movie key={movieId} movieId={movieId} />)
     } else if (isError) {
-        content = <p>{error}</p>;
+        content = <p>Error! {error}</p>;
     } else if (isUninitialized) {
         navigate('/')
         return

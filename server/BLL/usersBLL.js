@@ -35,21 +35,23 @@ const getUserById = (id) => {
 const addUser = async (obj) => {
   const u = new User({ username: obj.username, password: obj.password });
   const user = await u.save()
-  await user.save()
-  const userJSON = { id: user.id, ...obj.user }
-  const permJSON = { id: user.id, ...obj.permissions }
-  const member = { idUser: user.id, ...obj.member }
-  await addUserJson(userJSON)
-  await addPremissJson(permJSON)
-  await membersBLL.addMember(member)
+  if (await user.save()) {
+    await addUserJson({ id: user.id, ...obj.user })
+    await addPremissJson({ id: user.id, ...obj.permissions })
+    if (user.username !== 'admin') {
+      const memberID = await membersBLL.addMember({ idUser: user.id, ...obj.member })
+      if (memberID) await updateUser(user.id, { memberID: memberID })
+      return true
+    }
+    return false
+  }
 };
 
 //first serves starting
 const defineAdmin = async () => {
   const countMember = await Member.countDocuments({})
   // If user collection is empty(first run of the server), insert default admin user and other default users
-  let numUsers = 11
-  if (countMember < numUsers) {
+  if (countMember === 0) {
     const { data } = await getAllUsersFirstTime()
     await addUser({
       "username": "admin",
@@ -60,7 +62,7 @@ const defineAdmin = async () => {
     for (let user of data) {
       let [username, password] = user.name.split(" ");
       let newUser = { "username": username, "password": password, "permissions": { "userPremiss": ["View Subscriptions", "Create Subscriptions"] }, "user": { "firstName": username, "lastName": password, "SessionTimeOut": 200 }, member: { ...user, "city": user.address.city, "firstName": username, "lastName": password } }
-      await addUser(newUser)
+      while (!await addUser(newUser)) { }
     }
 
   } else { console.log("All default users created!"); return; }
@@ -86,4 +88,3 @@ module.exports = {
   deleteUser,
   allUsers
 };
-
