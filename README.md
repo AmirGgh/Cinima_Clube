@@ -33,7 +33,7 @@ In the client file runs 'npm i' to install all the packages. then run 'npm start
 - This page allowd Admin to add, edit, delete users.
 
 ### USERS FOR LOGIN:
-username: admin password: ad1234
-username: Leanne password: Graham
-username: Ervin password: Howell
-username: Clementine  password: Bauch
+- username: admin password: ad1234
+- username: Leanne password: Graham
+- username: Ervin password: Howell
+- username: Clementine  password: Bauch
