@@ -16,17 +16,48 @@ export default function CreateAccount({ cancel }) {
         { label: 'Username', name: 'username', type: 'text' },
         { label: 'Password', name: 'password', type: 'password' }]
 
+    // const getUserByName = async (user) => {
+    //     try {
+    //         console.log(user)
+    //         const response = await fetch(`/users/username/try1`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify(user)
+    //         });
+    //     } catch (err) {
+    //         console.error(err);
+    //         return null;
+    //     }
+    // };
+
+
     const curUser = { name: '', password: '' }
-    const handleSubmit = async ({ username, password }) => {
-        authService.login(username, password)
-            .then(res => {
-                if (res.status == 200) {
-                    authService.saveToken(res.data.token)
-                    authService.saveId(res.data.id)
-                    authService.saveRole(res.data.role)
-                    navigate('/movies')
-                }
-            })
+
+    const handleSubmit = async (user) => {
+        try {
+            console.log(user)
+            const response = await fetch(`http://localhost:8000/users/username/${user.username}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            });
+        } catch (err) {
+            console.error(err);
+            return null;
+        }
+        // authService.login(username, password)
+        //     .then(res => {
+        //         if (res.status == 200) {
+        //             authService.saveToken(res.data.token)
+        //             authService.saveId(res.data.id)
+        //             authService.saveRole(res.data.role)
+        //             navigate('/movies')
+        //         }
+        //     })
     };
     // --------------------------------------------- > create root for new users- have a username + need to replace password
 

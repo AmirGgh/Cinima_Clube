@@ -118,6 +118,11 @@ router.route('/:id').put(async (req, res) => {
   res.json(result);
 });
 
+router.route('/username/:username').post(async (req, res) => {
+  const result = await usesrsBLL.createAccuont(req.body);
+  res.json(result);
+});
+
 // Delete a user
 router.route('/:id').delete(async (req, res) => {
 

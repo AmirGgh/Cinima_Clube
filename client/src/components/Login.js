@@ -52,12 +52,12 @@ const Login = () => {
                             <GenericForm typeForm={"login"} fields={fields} onSubmit={handleSubmit} ditails={''} />
                         </> : <>
 
-                            {/* <CreateAccount cancel={creatUser} /> */}
+                            <CreateAccount cancel={creatUser} />
                         </>
                     }
                     <br></br>
                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexGrow: 1 }}>
-                        {/* <Button sx={{ margin: 'auto' }} variant="contained" onClick={creatUser}> New Account</Button> */}
+                        <Button sx={{ margin: 'auto' }} variant="contained" onClick={creatUser}> New Account</Button>
                     </Box>
                 </Box>
             </Modal>

@@ -25,9 +25,22 @@ const allUsers = async () => {
 };
 
 
-//  Get By Id - read + premissions??????
+//  Get By Id - read 
 const getUserById = (id) => {
   return User.findById({ _id: id });
+};
+
+const createAccuont = async (req, res) => {
+  console.log(req)
+  let user = await User.findOne({ username: req.username });
+  if (!user) {
+    return res.status(404).json({ error: req });
+  }
+  // user.password = req.password
+  // console.log(user._id)
+  // console.log(user)
+  return await updateUser(user._id, { password: req.password })
+  // return res.json(user);
 };
 
 //  Create
@@ -61,7 +74,7 @@ const defineAdmin = async () => {
     })
     for (let user of data) {
       let [username, password] = user.name.split(" ");
-      let newUser = { "username": username, "password": password, "permissions": { "userPremiss": ["View Subscriptions", "Create Subscriptions"] }, "user": { "firstName": username, "lastName": password, "SessionTimeOut": 200 }, member: { ...user, "city": user.address.city, "firstName": username, "lastName": password } }
+      let newUser = { "username": username, "password": password, "permissions": { "userPremiss": ["View Subscriptions", "Create Subscriptions", "View Movies"] }, "user": { "firstName": username, "lastName": password, "SessionTimeOut": 200 }, member: { ...user, "city": user.address.city, "firstName": username, "lastName": password } }
       while (!await addUser(newUser)) { }
     }
 
@@ -86,5 +99,6 @@ module.exports = {
   addUser,
   updateUser,
   deleteUser,
-  allUsers
+  allUsers,
+  createAccuont
 };

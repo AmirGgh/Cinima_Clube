@@ -10,17 +10,17 @@ import { useDeleteMembersMutation, useGetMembersQuery } from '../subscriptions/s
 
 const User = ({ id }) => {
 
+    const { permi } = useGetJsonPremiQuery('getJsonPremi', {
+        selectFromResult: ({ data }) => ({
+            permi: data?.entities[id]
+        }),
+    })
     const { user } = useGetUsersQuery('getUsers', {
         selectFromResult: ({ data }) => ({
             user: data?.entities[id]
         }),
     })
     // console.log(user)
-    const { permi } = useGetJsonPremiQuery('getJsonPremi', {
-        selectFromResult: ({ data }) => ({
-            permi: data?.entities[id]
-        }),
-    })
     // console.log(permi)
     const { userJsonData } = useGetJsonDataQuery('getJsonPremi', {
         selectFromResult: ({ data }) => ({
