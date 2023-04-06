@@ -124,5 +124,16 @@ export const {
     useDeleteUserPremissMutation,
     useDeleteUserJsonDataMutation,
 } = usersApiSlice
-
-
+const { endpoints } = usersApiSlice;
+endpoints.getUsers.rejected?.use((error, _, __, thunkApi) => {
+    const { status } = error.response;
+    let errorMessage = 'An error occurred. Please try again later.';
+    if (status === 401) {
+        errorMessage = 'Unauthorized';
+    } else if (status === 404) {
+        errorMessage = 'Resource not found';
+    } else if (status >= 500) {
+        errorMessage = 'An error occurred on the server';
+    }
+    thunkApi.rejectWithValue({ errorMessage });
+})

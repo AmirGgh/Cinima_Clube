@@ -16,10 +16,28 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import TheatersRoundedIcon from '@mui/icons-material/TheatersRounded';
-const pages = ['movies', 'subscriptions', 'users'];
+import { AppContext } from "../App";
+import { useContext } from "react";
+import { useState } from "react";
 
 
 function Header() {
+    const { currPermissions } = useContext(AppContext)
+    const vlidePermiss = (per) => {
+        return currPermissions.includes(per)
+    }
+    const [pages, setpages] = useState([])
+    // let pages = ['movies', 'subscriptions', 'users'];
+    useEffect(() => {
+        if (currPermissions) {
+            let p = currPermissions.filter((per) => (per === "CRUD Users" || per === "View Subscriptions" || per === 'View Movies')).map((p) => p.split(' ')[1])
+            // pages = pages
+            setpages(p)
+        }
+
+    }, [currPermissions])
+
+    // console.log(pages)
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const navigate = useNavigate

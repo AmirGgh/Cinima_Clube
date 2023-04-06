@@ -24,7 +24,6 @@ router.route('/').get(async (req, res) => {
 
     // Check for 'View Movies' permission
     if (!decoded.permissions || !decoded.permissions.includes('View Movies')) {
-      console.log(decoded.permissions)
       console.log('Access Forbidden')
       return res.status(403).send({ auth: false, message: 'Access Forbidden' });
     }

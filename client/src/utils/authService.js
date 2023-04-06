@@ -6,7 +6,7 @@ const login = async (username, password) => {
 
 const setPermissions = async (id) => {
     const p = await axios.get(`http://localhost:8000/jsonPremi/${id}`)
-    sessionStorage["userPermissions"] = p.userPremiss.join(',')
+    return p.data.userPremiss
 }
 const saveToken = (token) => {
     sessionStorage["token"] = token

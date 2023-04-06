@@ -6,15 +6,12 @@ import Subscription from './Subscription';
 import { useGetMembersQuery } from './subscriptionsSlice'
 
 const SubscriptionsList = () => {
+
     const {
         data: members,
         isLoading,
-        isSuccess,
-        isError,
-        error,
-        isUninitialized
+        isSuccess
     } = useGetMembersQuery('getMembers')
-    console.log(members)
 
 
     let content
@@ -22,11 +19,6 @@ const SubscriptionsList = () => {
         content = <Loading />
     } else if (isSuccess) {
         content = members.ids.filter((id) => members.entities[id].firstName).map(id => <Subscription key={id} id={id} />)
-
-    } else if (isError) {
-        content = <p>{error}</p>;
-    } else if (isUninitialized) {
-        content = <p>{error}</p>;
     }
     return (
         <Grid container display="flex" spacing={2}  >

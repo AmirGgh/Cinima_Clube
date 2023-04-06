@@ -20,9 +20,6 @@ const UsersList = () => {
         data: users,
         isLoading,
         isSuccess,
-        isError,
-        error,
-        isUninitialized
     } = useGetUsersQuery('getUsers')
     const [addNewUSER] = useAddUserMutation('addUser')
 
@@ -40,10 +37,6 @@ const UsersList = () => {
         content = <Loading />
     } else if (isSuccess) {
         content = users.ids.map(id => <User key={id} id={id} />)
-    } else if (isError) {
-        content = <p>{error}</p>;
-    } else if (isUninitialized) {
-        content = <p>{error}</p>;
     }
     return (
         <Box>

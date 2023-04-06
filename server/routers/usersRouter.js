@@ -13,17 +13,19 @@ router.get('/', async (req, res) => {
   const PRIVATE_KEY = 'somekey';
   const token = req.headers['x-access-token'];
   if (!token) {
-    return res.status(401).send({ auth: false, message: 'No Token Provided' });
+    return res.status(401)
+    // .send({ auth: false, message: 'No Token Provided' });
   }
 
   jwt.verify(token, PRIVATE_KEY, async (err, decoded) => {
     if (err) {
-      return res.status(500).send({ auth: false, message: 'Failed To authenticate' });
+      return res.status(500)
+      // .send({ auth: false, message: 'Failed To authenticate' });
     }
 
     // Check for 'CRUD Users' permission
     if (!decoded.permissions || !decoded.permissions.includes('CRUD Users')) {
-      return res.status(403).send({ auth: false, message: 'Access Forbidden' });
+      return res.status(403).send('<p> Access Forbidden</p>');
     }
 
     // Only allow access if 'CRUD Users' permission is present
@@ -139,7 +141,7 @@ router.route('/:id').delete(async (req, res) => {
 
     // Check for 'CRUD Users' permission
     if (!decoded.permissions || !decoded.permissions.includes('CRUD Users')) {
-      return res.status(403).send({ auth: false, message: 'Access Forbidden' });
+      return res.status(403)
     }
 
     // Only allow access if 'CRUD Users' permission is present

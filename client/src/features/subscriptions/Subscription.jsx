@@ -94,12 +94,17 @@ const Subscription = ({ id }) => {
             member: data?.entities[id]
         }),
     })
-    const { subscription, isSuccess } = useGetSubscriptionsQuery('getSubscriptions', {
-        selectFromResult: ({ data }) => ({
-            subscription: data?.entities[member._id]
-        }),
-    })
+    const { subscription, isError,
+        error, } = useGetSubscriptionsQuery('getSubscriptions', {
+            selectFromResult: ({ data }) => ({
+                subscription: data?.entities[member._id]
+            }),
+        })
     const [newSubscribe, setNewSubscribe] = useState(false)
+    if (isError) {
+        return <p>{error}</p>;
+    }
+
     const newSubs = () => {
         setNewSubscribe(!newSubscribe)
     }

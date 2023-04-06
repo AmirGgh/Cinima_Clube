@@ -1,6 +1,5 @@
 import MoviesList from "./features/movies/MoviesList";
-import Layout from "./components/Layout";
-import { Routes, Navigate } from 'react-router-dom';
+import { Routes } from 'react-router-dom';
 import Login from "./components/Login";
 import { Route } from "react-router"
 import { Container, CssBaseline, ThemeProvider } from "@mui/material";
@@ -8,24 +7,32 @@ import { theme } from "./utils/theme";
 import Header from "./components/Header";
 import SubscriptionsList from "./features/subscriptions/SubscriptionsList";
 import UsersList from "./features/users/UsersList";
+import { createContext, useState } from "react";
+import authService from "./utils/authService";
+
+export const AppContext = createContext()
 function App() {
+  const [currPermissions, setCurrPermissions] = useState()
+
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Header />
-      <br />
-      <Container fixed >
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route>
-            <Route path="/movies" element={<MoviesList />} />
-            <Route path="/subscriptions" element={<SubscriptionsList />} />
-            <Route path="/users" element={<UsersList />} />
-          </Route>
-        </Routes>
-      </Container>
-    </ThemeProvider>
+    <AppContext.Provider value={{ currPermissions, setCurrPermissions }}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Header />
+        <br />
+        <Container fixed >
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/login" element={<Login />} />
+            <Route>
+              < Route path="/movies" element={<MoviesList />} />
+              <Route path="/subscriptions" element={<SubscriptionsList />} />
+              {authService.getRole() === 'admin' && <Route path="/users" element={<UsersList />} />}
+            </Route>
+          </Routes>
+        </Container>
+      </ThemeProvider>
+    </AppContext.Provider>
 
   );
 }
