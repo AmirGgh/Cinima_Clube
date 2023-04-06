@@ -4,6 +4,10 @@ const login = async (username, password) => {
     return await axios.post('http://localhost:8000/auth/login', { username, password })
 }
 
+const setPermissions = async (id) => {
+    const p = await axios.get(`http://localhost:8000/jsonPremi/${id}`)
+    sessionStorage["userPermissions"] = p.userPremiss.join(',')
+}
 const saveToken = (token) => {
     sessionStorage["token"] = token
 }
@@ -24,6 +28,6 @@ const getRole = () => {
 }
 
 const reset = () => {
-    localStorage.clear();
+    sessionStorage.clear()
 }
-export default { login, saveToken, getToken, saveId, getId, saveRole, getRole, reset }
+export default { login, saveToken, getToken, saveId, getId, saveRole, getRole, reset, setPermissions }

@@ -26,7 +26,6 @@ const Movie = ({ movieId }) => {
     const edit = () => {
         setEditMovie(!editMovie)
     }
-    // console.log(movie)
     return (
         <Card sx={{
             my: 1,
@@ -37,8 +36,7 @@ const Movie = ({ movieId }) => {
                 image={movie.image}
             />
             <CardContent>
-                <Typography paragraph key={movie.name}>{movie.name}</Typography >
-                <Typography paragraph key={movie.image}>Members wached:</Typography >
+                <Typography paragraph >{movie.name}</Typography >
             </CardContent>
 
             <CardActions>
@@ -47,7 +45,7 @@ const Movie = ({ movieId }) => {
                 <MovieDisplay show={show} showMovie={showMovie} movie={movie} />
                 <EditMovie edit={edit} editMovie={editMovie} movie={movie} />
             </CardActions>
-            {movie?.subsWatches.length > 0 && <Box sx={{
+            {movie.subsWatches?.length > 0 && <CardContent sx={{
                 display: 'flex',
                 flexWrap: 'wrap',
                 alignContent: 'center',
@@ -58,10 +56,11 @@ const Movie = ({ movieId }) => {
                 borderRadius: 3,
                 fontSize: '10rem'
             }}>
+                <Typography paragraph>Members wached:</Typography >
                 {movie?.subsWatches.map((memb) => (
-                    <MovieSubs key={memb.email} id={memb.memberID} date={memb.date} />
+                    <MovieSubs paragraph key={memb.email} id={memb.memberID} date={memb.date} />
                 ))}
-            </Box>}
+            </CardContent>}
         </Card>
     )
 }

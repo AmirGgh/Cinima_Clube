@@ -31,16 +31,14 @@ const getUserById = (id) => {
 };
 
 const createAccuont = async (req, res) => {
-  console.log(req)
   let user = await User.findOne({ username: req.username });
   if (!user) {
-    return res.status(404).json({ error: req });
+    return res.status(404).json({ error: "user not found" });
   }
-  // user.password = req.password
-  // console.log(user._id)
-  // console.log(user)
+  // if (user.password != '') {
+  //   return res.status(403).json({ error: "user alredy exist!" })
+  // }
   return await updateUser(user._id, { password: req.password })
-  // return res.json(user);
 };
 
 //  Create

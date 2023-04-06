@@ -20,7 +20,7 @@ const MovieList = ({ newSubs, memberID, subscriptionWatched }) => {
     const [updateSubscribe] = useUpdateSubscriptionsMutation()// in subscriptions
     const [updateMovieSubscriptions] = useUpdateSubsMovieMutation() // in movie
 
-    const [newMovie, setNewMovie] = useState('');
+    const [newMovie, setNewMovie] = useState();
 
     const handleChange = (event) => {
         setNewMovie(event.target.value);
@@ -29,23 +29,25 @@ const MovieList = ({ newSubs, memberID, subscriptionWatched }) => {
 
     const subscribeMovie = async () => {
         let date = dateDDMMYY()
-        if (!subscriptionWatched?.memberID) {
-            try {
-                const subs = await newSubscribe({ id: newMovie, body: { memberID, movieWatched: [{ movieID: newMovie, date }] } }).unwrap()
-                if (subs) {
-                    await updateMovieSubscriptions({ id: newMovie, body: { memberID, date } }).unwrap()
+        if (newMovie) {
+            if (!subscriptionWatched?.memberID) {
+                try {
+                    const subs = await newSubscribe({ id: newMovie, body: { memberID, movieWatched: [{ movieID: newMovie, date }] } }).unwrap()
+                    if (subs) {
+                        await updateMovieSubscriptions({ id: newMovie, body: { memberID, date } }).unwrap()
+                    }
+                } catch (err) {
+                    console.error('Failed to edit the subscribe', err)
                 }
-            } catch (err) {
-                console.error('Failed to edit the subscribe', err)
-            }
-        } else {
-            try {
-                const subs = await updateSubscribe({ id: subscriptionWatched._id, body: { movieID: newMovie, date } }).unwrap()
-                if (subs) {
-                    await updateMovieSubscriptions({ id: newMovie, body: { memberID, date } }).unwrap()
+            } else {
+                try {
+                    const subs = await updateSubscribe({ id: subscriptionWatched._id, body: { movieID: newMovie, date } }).unwrap()
+                    if (subs) {
+                        await updateMovieSubscriptions({ id: newMovie, body: { memberID, date } }).unwrap()
+                    }
+                } catch (err) {
+                    console.error('Failed to edit the subscribe', err)
                 }
-            } catch (err) {
-                console.error('Failed to edit the subscribe', err)
             }
         }
         newSubs()

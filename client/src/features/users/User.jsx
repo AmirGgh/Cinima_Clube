@@ -20,20 +20,16 @@ const User = ({ id }) => {
             user: data?.entities[id]
         }),
     })
-    // console.log(user)
-    // console.log(permi)
     const { userJsonData } = useGetJsonDataQuery('getJsonPremi', {
         selectFromResult: ({ data }) => ({
             userJsonData: data?.entities[id]
         }),
     })
-    // console.log(user)
     const { member } = useGetMembersQuery('getMembers', {
         selectFromResult: ({ data }) => ({
             member: data?.entities[user.memberID]
         }),
     })
-    // console.log(member)
 
     const [deleteUser] = useDeleteUserMutation('deleteUser')
     const [deleteUserPrem] = useDeleteUserPremissMutation('deleteUserPremiss')

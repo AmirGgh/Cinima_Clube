@@ -34,7 +34,7 @@ router.get('/', async (req, res) => {
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-// Get user premissions By ID -?
+// Get user premissions By ID - anyone that have token can get permissions by id
 router.route('/:id').get(async (req, res) => {
 
   const PRIVATE_KEY = 'somekey';
@@ -47,12 +47,6 @@ router.route('/:id').get(async (req, res) => {
     if (err) {
       return res.status(500).send({ auth: false, message: 'Failed To authenticate' });
     }
-
-    // Check for 'CRUD Users' permission
-    if (!decoded.permissions || !decoded.permissions.includes('CRUD Users')) {
-      return res.status(403).send({ auth: false, message: 'Access Forbidden' });
-    }
-
     // Only allow access if 'CRUD Users' permission is present
     const { id } = req.params;
     const user = await jsonUsersBLL.getPremissByIdJson(id);

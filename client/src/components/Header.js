@@ -42,6 +42,7 @@ function Header() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+    console.log(authService.getRole())
 
     return (
         <AppBar position="sticky">
@@ -102,7 +103,7 @@ function Header() {
                             ))}
                             <MenuItem
                                 key="Logout"
-                                onClick={handleCloseNavMenu}
+                                onClick={() => { handleCloseNavMenu(); authService.reset(); }}
                             >
                                 <Link style={{ textDecoration: "none", color: "white" }} to={'/'}>Logout</Link>
                             </MenuItem>
@@ -139,15 +140,16 @@ function Header() {
                         ))}
 
                     </Box>
+
                     <Button key="Logout"
-                        onClick={handleCloseNavMenu}
+                        onClick={() => { authService.reset(); handleCloseNavMenu(); }}
                         sx={{ color: 'white', display: { xs: 'none', md: 'flex' } }}>
-                        <Link style={{ textDecoration: "none", color: "white" }} to={'/'} >Logout</Link>
+                        <Link style={{ textDecoration: "none", color: "white" }} to={'/'} > {authService.getRole()?.toUpperCase()} - Logout</Link>
                     </Button>
 
                 </Toolbar>
             </Container>
-        </AppBar>
+        </AppBar >
     );
 }
 export default Header;

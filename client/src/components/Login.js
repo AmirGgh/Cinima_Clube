@@ -24,15 +24,17 @@ const Login = () => {
     const somethingWrong = () => {
         setWrong(!wrong)
     }
+    let userPermis;
+
     const handleSubmit = async ({ username, password }) => {
         authService.login(username, password)
             .then(res => {
                 if (res.status == 200) {
-                    console.log("first")
                     authService.saveToken(res.data.token)
-                    authService.saveId(res.data.id)
                     authService.saveRole(res.data.role)
+                    authService.setPermissions(res.data.id).then(res => console.log(res))
                     navigate('/movies')
+
                 }
             }).catch(err => somethingWrong())
     };
@@ -59,6 +61,8 @@ const Login = () => {
                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexGrow: 1 }}>
                         <Button sx={{ margin: 'auto' }} variant="contained" onClick={creatUser}> New Account</Button>
                     </Box>
+                    <br />
+                    username: admin, password: ad1234
                 </Box>
             </Modal>
         </div>
