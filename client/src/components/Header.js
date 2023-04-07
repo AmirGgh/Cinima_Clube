@@ -23,21 +23,15 @@ import { useState } from "react";
 
 function Header() {
     const { currPermissions } = useContext(AppContext)
-    const vlidePermiss = (per) => {
-        return currPermissions.includes(per)
-    }
+    const pagePermiss = authService.getPermissions()
     const [pages, setpages] = useState([])
-    // let pages = ['movies', 'subscriptions', 'users'];
     useEffect(() => {
         if (currPermissions) {
-            let p = currPermissions.filter((per) => (per === "CRUD Users" || per === "View Subscriptions" || per === 'View Movies')).map((p) => p.split(' ')[1])
-            // pages = pages
+            let p = currPermissions.filter((per) => (per === "CRUD Users" || per === "View Subscriptions" || per === 'View Movies')).map((p) => p.split(' ')[1]).reverse()
             setpages(p)
         }
-
     }, [currPermissions])
 
-    // console.log(pages)
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const navigate = useNavigate
@@ -60,7 +54,6 @@ function Header() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-    console.log(authService.getRole())
 
     return (
         <AppBar position="sticky">

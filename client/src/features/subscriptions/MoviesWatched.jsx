@@ -5,7 +5,6 @@ import { useGetMoviesQuery } from '../movies/moviesSlice';
 
 
 export default function MoviesWatched({ id, date }) {
-    // console.log(id, date)
     const [showMovie, setShowMovie] = useState(false)
     const show = () => {
         setShowMovie(!showMovie)

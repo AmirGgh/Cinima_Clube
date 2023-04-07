@@ -11,13 +11,13 @@ import MovieSubs from './MovieSubs';
 
 
 
-const Movie = ({ movieId }) => {
+const Movie = ({ movieId, editPer, viewSubsPer }) => {
+
     const { movie } = useGetMoviesQuery('getMovies', {
         selectFromResult: ({ data }) => ({
             movie: data?.entities[movieId]
         }),
     })
-    // console.log(movie)
     const [showMovie, setShowMovie] = useState(false)
     const [editMovie, setEditMovie] = useState(false)
     const show = () => {
@@ -26,11 +26,17 @@ const Movie = ({ movieId }) => {
     const edit = () => {
         setEditMovie(!editMovie)
     }
+    let content
+    if (movie?.subsWatches) {
+        content = movie.subsWatches.map((memb) => (
+            <MovieSubs key={memb.email} id={memb.memberID} date={memb.date} />
+        ))
+    }
     return (
         <Card sx={{
             my: 1,
             mx: 1
-        }} key={movie._id}>
+        }} >
             <CardMedia
                 sx={{ height: 360, width: 260 }}
                 image={movie.image}
@@ -41,11 +47,11 @@ const Movie = ({ movieId }) => {
 
             <CardActions>
                 <Button size="small" onClick={show}>Show More</Button>
-                <Button size="small" onClick={edit}>Edit</Button>
                 <MovieDisplay show={show} showMovie={showMovie} movie={movie} />
-                <EditMovie edit={edit} editMovie={editMovie} movie={movie} />
+                {editPer && <Button size="small" onClick={edit}>Edit</Button>}
+                {editPer && <EditMovie key={movie.image} edit={edit} editMovie={editMovie} movie={movie} />}
             </CardActions>
-            {movie.subsWatches?.length > 0 && <CardContent sx={{
+            {movie.subsWatches?.length > 0 && viewSubsPer && <CardContent sx={{
                 display: 'flex',
                 flexWrap: 'wrap',
                 alignContent: 'center',
@@ -57,9 +63,7 @@ const Movie = ({ movieId }) => {
                 fontSize: '10rem'
             }}>
                 <Typography paragraph>Members wached:</Typography >
-                {movie?.subsWatches.map((memb) => (
-                    <MovieSubs paragraph key={memb.email} id={memb.memberID} date={memb.date} />
-                ))}
+                {content && content}
             </CardContent>}
         </Card>
     )

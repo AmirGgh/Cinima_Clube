@@ -37,8 +37,8 @@ const User = ({ id }) => {
     const [deleteMember] = useDeleteMembersMutation('deleteMembers')
     const [editUser, setEditUser] = useState(false)
     const delUser = async (id) => {
-        console.log({ id })
-        console.log({ id: member._id })
+        // console.log({ id })
+        // console.log({ id: member._id })
         // await deleteUserPrem({ id: id })
         // await deleteUserData({ id: id })
         await deleteMember({ id: member._id })

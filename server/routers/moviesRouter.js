@@ -12,19 +12,16 @@ router.route('/').get(async (req, res) => {
   const PRIVATE_KEY = 'somekey';
   const token = req.headers['x-access-token'];
   if (!token) {
-    console.log('No Token Provided')
     return res.status(401).send({ auth: false, message: 'No Token Provided' });
   }
 
   jwt.verify(token, PRIVATE_KEY, async (err, decoded) => {
     if (err) {
-      console.log('Failed To authenticate')
       return res.status(500).send({ auth: false, message: 'Failed To authenticate' });
     }
 
     // Check for 'View Movies' permission
     if (!decoded.permissions || !decoded.permissions.includes('View Movies')) {
-      console.log('Access Forbidden')
       return res.status(403).send({ auth: false, message: 'Access Forbidden' });
     }
 

@@ -22,7 +22,6 @@ export default function EditUser({ editUser, edit, user, member }) {
         }),
     })
     const userDitails = { firstName: member?.firstName, lastName: member?.lastName, SessionTimeOut: userJsonData?.SessionTimeOut }
-    // console.log(member)
 
     const [updateJsonPremi] = useUpdateJsonPremiMutation()
     const [updateMember] = useUpdateMemberMutation()
@@ -40,7 +39,6 @@ export default function EditUser({ editUser, edit, user, member }) {
             await updateJsonData({ id: user._id, body: { ...userJsonData, SessionTimeOut: +data.SessionTimeOut } }).unwrap()
         }
         if (data?.premissions && data.premissions.length > 0) {
-            console.log({ id: user._id, body: { id: user._id, userPremiss: data.premissions } })
             await updateJsonPremi({ id: user._id, body: { id: user._id, userPremiss: data.premissions } }).unwrap()
         }
     }

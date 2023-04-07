@@ -88,7 +88,7 @@ const MovieList = ({ newSubs, memberID, subscriptionWatched }) => {
     );
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
-const Subscription = ({ id }) => {
+const Subscription = ({ id, editPer, viewSubsPer }) => {
     const { member } = useGetMembersQuery('getMembers', {
         selectFromResult: ({ data }) => ({
             member: data?.entities[id]
@@ -124,11 +124,15 @@ const Subscription = ({ id }) => {
                 <Typography > Email: {member.email}</Typography >
                 <Typography > City: {member.city}</Typography >
                 <hr />
-                <CardActions>
+                {editPer && <CardActions>
                     {!newSubscribe && <Button size="small" onClick={newSubs}>subscribe to new movie</Button>}
                     {newSubscribe && <MovieList newSubs={newSubs} memberID={id} subscriptionWatched={subscription} />}
-                </CardActions>
-                Movies Watched: {content && content}
+                </CardActions>}
+                {viewSubsPer &&
+                    <>
+                        Movies Watched: {content && content}
+                    </>
+                }
             </CardContent>
         </Card >
     )

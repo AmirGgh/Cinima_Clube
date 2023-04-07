@@ -64,7 +64,13 @@ const Login = () => {
                         <Button sx={{ margin: 'auto' }} variant="contained" onClick={creatUser}> New Account</Button>
                     </Box>
                     <br />
+                    Admin:
+                    <br />
                     username: admin, password: ad1234
+                    <br />
+                    User:
+                    <br />
+                    username: Leanne, password: Graham
                 </Box>
             </Modal>
         </div>

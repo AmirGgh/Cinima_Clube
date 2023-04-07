@@ -1,26 +1,36 @@
-import { Grid } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import Movie from './Movie';
 import { useGetMoviesQuery } from './moviesSlice';
 
 import Loading from '../../components/Loading';
+import { AppContext } from '../../App';
+import { useContext } from 'react';
+import { validPermission } from '../../utils/permissionsUI';
+import { Link } from 'react-router-dom';
+import MovieBar from './MovieBar';
 const MoviesList = () => {
-
+    const { currPermissions } = useContext(AppContext)
     const {
         data: movies,
         isLoading,
         isSuccess,
     } = useGetMoviesQuery('getMovies')
 
+    const editPer = validPermission("Update Movies", currPermissions)
+    const viewSubsPer = validPermission("Update Subscriptions", currPermissions)
+    const addPer = validPermission("Create Movies", currPermissions)
 
     let content;
     if (isLoading) {
         content = <Loading />
     }
     else if (isSuccess) {
-        content = movies.ids.map(movieId => <Movie key={movieId} movieId={movieId} />)
+        content = movies.ids.map(movieId => <Movie key={movieId} movieId={movieId} editPer={editPer} viewSubsPer={viewSubsPer} />)
     }
+
     return (
         <Grid container display="flex" spacing={2}  >
+            {addPer && <MovieBar />}
             {content}
         </Grid>
     )

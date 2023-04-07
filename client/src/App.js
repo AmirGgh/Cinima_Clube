@@ -7,12 +7,18 @@ import { theme } from "./utils/theme";
 import Header from "./components/Header";
 import SubscriptionsList from "./features/subscriptions/SubscriptionsList";
 import UsersList from "./features/users/UsersList";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import authService from "./utils/authService";
+import { validPermission } from "./utils/permissionsUI";
+import AddMovie from "./features/movies/AddMovie";
 
 export const AppContext = createContext()
 function App() {
   const [currPermissions, setCurrPermissions] = useState()
+  useEffect(() => {
+    const pagePermiss = authService.getPermissions()
+    setCurrPermissions(pagePermiss)
+  }, [])
 
   return (
     <AppContext.Provider value={{ currPermissions, setCurrPermissions }}>
@@ -26,8 +32,9 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route>
               < Route path="/movies" element={<MoviesList />} />
+              < Route path="/movies/AddMovie" element={<AddMovie />} />
               <Route path="/subscriptions" element={<SubscriptionsList />} />
-              {authService.getRole() === 'admin' && <Route path="/users" element={<UsersList />} />}
+              {validPermission("CRUD Users", currPermissions) && <Route path="/users" element={<UsersList />} />}
             </Route>
           </Routes>
         </Container>

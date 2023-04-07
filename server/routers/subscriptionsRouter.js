@@ -71,7 +71,7 @@ router.route('/').post(async (req, res) => {
     }
 
     // Check for 'Create Subscriptions' permission
-    if (!decoded.permissions || !decoded.permissions.includes('Create Subscriptions')) {
+    if (!decoded.permissions || !decoded.permissions.includes('Update Subscriptions')) {
       return res.status(403).send({ auth: false, message: 'Access Forbidden' });
     }
 

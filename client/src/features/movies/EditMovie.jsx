@@ -15,6 +15,7 @@ export default function EditMovie({ editMovie, edit, movie }) {
     const [deleteMovie] = useDeleteMovieMutation()
     const updateThisMovie = async (data) => {
         if (data.genres) data.genres = data.genres.split(",")
+        console.log(data)
         if (data) {
             try {
                 await updateMovie({ id: movie._id, body: data }).unwrap()
@@ -26,7 +27,6 @@ export default function EditMovie({ editMovie, edit, movie }) {
     }
     const deleteThisMovie = async () => {
         try {
-            console.log({ id: movie._id });
             await deleteMovie({ id: movie._id }).unwrap()
 
         } catch (err) {
