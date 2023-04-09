@@ -30,7 +30,7 @@ const getUserById = (id) => {
   return User.findById({ _id: id });
 };
 
-const createAccuont = async (req, res) => {
+const createAccount = async (req, res) => {
   let user = await User.findOne({ username: req.username });
   if (!user) {
     return res.status(404).json({ error: "user not found" });
@@ -98,5 +98,5 @@ module.exports = {
   updateUser,
   deleteUser,
   allUsers,
-  createAccuont
+  createAccount
 };

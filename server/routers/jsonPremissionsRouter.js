@@ -37,17 +37,7 @@ router.get('/', async (req, res) => {
 // Get user premissions By ID - anyone that have token can get permissions by id
 router.route('/:id').get(async (req, res) => {
 
-  // const PRIVATE_KEY = 'somekey';
-  // const token = req.headers['x-access-token'];
-  // if (!token) {
-  //   return res.status(401).send({ auth: false, message: 'No Token Provided' });
-  // }
-
-  // jwt.verify(token, PRIVATE_KEY, async (err, decoded) => {
-  //   if (err) {
-  //     return res.status(500).send({ auth: false, message: 'Failed To authenticate' });
-  //   }
-  // Only allow access if 'CRUD Users' permission is present
+  // that router should give data befor token will create
   const { id } = req.params;
   const user = await jsonUsersBLL.getPremissByIdJson(id);
   res.status(200).send(user);

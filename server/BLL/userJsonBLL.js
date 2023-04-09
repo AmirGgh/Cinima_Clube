@@ -1,8 +1,5 @@
 const userFile = require('../DALS/jsonUserDAL')
 
-// const { dateDDMMYY } = require('../Utils/dateDDMMYY')
-// dateDDMMYY()
-
 const getAllUsersJson = async () => {
     const { users } = await userFile.getUserJSON()
     return users

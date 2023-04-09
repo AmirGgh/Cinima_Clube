@@ -1,155 +1,75 @@
 const express = require('express');
-const usesrsBLL = require('../BLL/usersBLL');
-const jwt = require('jsonwebtoken')
+const usersBLL = require('../BLL/usersBLL');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-// Entry Point 'http://localhost:8000/users'
+const PRIVATE_KEY = 'somekey';
 
-// const admin
+// Middleware for authenticating the token and checking for 'CRUD Users' permission
+const authenticate = (req, res, next) => {
+  const token = req.headers['x-access-token'];
+  if (!token) {
+    return res.status(401).json({ auth: false, message: 'No Token Provided' });
+  }
 
-//--------------------------------------------------------------------------------
+  jwt.verify(token, PRIVATE_KEY, (err, decoded) => {
+    if (err) {
+      return res.status(500).json({ auth: false, message: 'Failed To authenticate' });
+    }
+
+    if (!decoded.permissions || !decoded.permissions.includes('CRUD Users')) {
+      return res.status(403).json({ auth: false, message: 'Access Forbidden' });
+    }
+
+    next();
+  });
+};
+
 // Get All users 
-router.get('/', async (req, res) => {
-  const PRIVATE_KEY = 'somekey';
-  const token = req.headers['x-access-token'];
-  if (!token) {
-    return res.status(401)
-    // .send({ auth: false, message: 'No Token Provided' });
-  }
-
-  jwt.verify(token, PRIVATE_KEY, async (err, decoded) => {
-    if (err) {
-      return res.status(500)
-      // .send({ auth: false, message: 'Failed To authenticate' });
-    }
-
-    // Check for 'CRUD Users' permission
-    if (!decoded.permissions || !decoded.permissions.includes('CRUD Users')) {
-      return res.status(403).send('<p> Access Forbidden</p>');
-    }
-
-    // Only allow access if 'CRUD Users' permission is present
-    const users = await usesrsBLL.getAllUsers();
-    res.status(200).send(users);
-  });
-});
-router.get('/allUsers', async (req, res) => {
-  const PRIVATE_KEY = 'somekey';
-  const token = req.headers['x-access-token'];
-  if (!token) {
-    return res.status(401).send({ auth: false, message: 'No Token Provided' });
-  }
-
-  jwt.verify(token, PRIVATE_KEY, async (err, decoded) => {
-    if (err) {
-      return res.status(500).send({ auth: false, message: 'Failed To authenticate' });
-    }
-
-    // Check for 'CRUD Users' permission
-    if (!decoded.permissions || !decoded.permissions.includes('CRUD Users')) {
-      return res.status(403).send({ auth: false, message: 'Access Forbidden' });
-    }
-
-    // Only allow access if 'CRUD Users' permission is present
-    const users = await usesrsBLL.allUsers();
-    res.status(200).send(users);
-  });
+router.get('/', authenticate, async (req, res) => {
+  const users = await usersBLL.getAllUsers();
+  res.status(200).json(users);
 });
 
+// Get all users 
+router.get('/allUsers', authenticate, async (req, res) => {
+  const users = await usersBLL.allUsers();
+  res.status(200).json(users);
+});
 
-// Get user By ID -?
-router.route('/:id').get(async (req, res) => {
-
-  const PRIVATE_KEY = 'somekey';
-  const token = req.headers['x-access-token'];
-  if (!token) {
-    return res.status(401).send({ auth: false, message: 'No Token Provided' });
-  }
-
-  jwt.verify(token, PRIVATE_KEY, async (err, decoded) => {
-    if (err) {
-      return res.status(500).send({ auth: false, message: 'Failed To authenticate' });
-    }
-
-    // Check for 'CRUD Users' permission
-    if (!decoded.permissions || !decoded.permissions.includes('CRUD Users')) {
-      return res.status(403).send({ auth: false, message: 'Access Forbidden' });
-    }
-
-    // Only allow access if 'CRUD Users' permission is present
-    const { id } = req.params;
-    const user = await usesrsBLL.getUserById(id);
-    res.status(200).send(user);
-  });
+// Get user By ID 
+router.get('/:id', authenticate, async (req, res) => {
+  const { id } = req.params;
+  const user = await usersBLL.getUserById(id);
+  res.status(200).json(user);
 });
 
 // Add a user
-router.route('/').post(async (req, res) => {
-
-  const PRIVATE_KEY = 'somekey';
-  const token = req.headers['x-access-token'];
-  if (!token) {
-    return res.status(401).send({ auth: false, message: 'No Token Provided' });
-  }
-
-  jwt.verify(token, PRIVATE_KEY, async (err, decoded) => {
-    if (err) {
-      return res.status(500).send({ auth: false, message: 'Failed To authenticate' });
-    }
-
-    // Check for 'CRUD Users' permission
-    if (!decoded.permissions || !decoded.permissions.includes('CRUD Users')) {
-      return res.status(403).send({ auth: false, message: 'Access Forbidden' });
-    }
-
-    // Only allow access if 'CRUD Users' permission is present
-    const obj = req.body;
-    const result = await usesrsBLL.addUser(obj);
-
-    res.status(200).send(result);
-  });
-
+router.post('/', authenticate, async (req, res) => {
+  const obj = req.body;
+  const result = await usersBLL.addUser(obj);
+  res.status(200).json(result);
 });
 
-// Update a user -admin can update everything user can update his (username,password)-mongoDB,(Fname,Lname)-users.JSON
-router.route('/:id').put(async (req, res) => {
+// Update a user -admin can update everything, user can update his username and password (MongoDB), and first and last name (users.json)
+router.put('/:id', authenticate, async (req, res) => {
   const { id } = req.params;
   const obj = req.body;
-  const result = await usesrsBLL.updateUser(id, obj);
-  // update to User.json & premissions 
+  const result = await usersBLL.updateUser(id, obj);
   res.json(result);
 });
 
-router.route('/username/:username').post(async (req, res) => {
-  const result = await usesrsBLL.createAccuont(req.body);
+// Create a user account
+router.post('/username/:username', async (req, res) => {
+  const result = await usersBLL.createAccount(req.body);
   res.json(result);
 });
 
 // Delete a user
-router.route('/:id').delete(async (req, res) => {
-
-  const PRIVATE_KEY = 'somekey';
-  const token = req.headers['x-access-token'];
-  if (!token) {
-    return res.status(401).send({ auth: false, message: 'No Token Provided' });
-  }
-
-  jwt.verify(token, PRIVATE_KEY, async (err, decoded) => {
-    if (err) {
-      return res.status(500).send({ auth: false, message: 'Failed To authenticate' });
-    }
-
-    // Check for 'CRUD Users' permission
-    if (!decoded.permissions || !decoded.permissions.includes('CRUD Users')) {
-      return res.status(403)
-    }
-
-    // Only allow access if 'CRUD Users' permission is present
-    const { id } = req.params;
-    const result = await usesrsBLL.deleteUser(id);
-
-    res.status(200).send(result);
-  });
+router.delete('/:id', authenticate, async (req, res) => {
+  const { id } = req.params;
+  const result = await usersBLL.deleteUser(id);
+  res.status(200).json(result);
 });
 
 module.exports = router;
