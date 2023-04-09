@@ -12,7 +12,8 @@ export default function CreateAccount({ cancel }) {
     const navigate = useNavigate()
     const fields = [
         { label: 'Username', name: 'username', type: 'text' },
-        { label: 'Password', name: 'password', type: 'password' }]
+        { label: 'Password', name: 'password', type: 'password' },
+    ]
 
     const curUser = { name: '', password: '' }
 

@@ -13,7 +13,7 @@ import { useContext } from 'react';
 import { AppContext } from '../App';
 
 const Login = () => {
-    const { setCurrPermissions } = useContext(AppContext)
+    const { setCurrPermissions, currPermissions } = useContext(AppContext)
     const navigate = useNavigate()
     const [newUser, setNewUser] = useState(false)
     const [wrong, setWrong] = useState(false)
@@ -27,7 +27,6 @@ const Login = () => {
     const somethingWrong = () => {
         setWrong(!wrong)
     }
-    let userPermis;
 
     const handleSubmit = async ({ username, password }) => {
         authService.login(username, password)
@@ -35,6 +34,7 @@ const Login = () => {
                 if (res.status == 200) {
                     authService.saveToken(res.data.token)
                     authService.saveRole(res.data.role)
+                    authService.saveId(res.data.id)
                     authService.setPermissions(res.data.id).then((res) => setCurrPermissions(res))
                     navigate('/movies')
                 }

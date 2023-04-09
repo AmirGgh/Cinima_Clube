@@ -16,10 +16,9 @@ const menageMembers = async () => {
     return { members: members, usersPremiss: usersPremiss, allUsers: allUsers }
 };
 // GET - Get By Id - read
-const getMemberById = (id) => {
-    return Member.findById({ _id: id });
+const getMemberByUserId = (userId) => {
+    return Member.findOne({ userID: userId });
 };
-
 // POST - Create
 const addMember = async (obj) => {
     const mem = new Member(obj);
@@ -44,9 +43,9 @@ const deleteMember = async (id) => {
 
 module.exports = {
     getAllMembers,
-    getMemberById,
     addMember,
     updateMember,
     deleteMember,
-    menageMembers
+    menageMembers,
+    getMemberByUserId
 };

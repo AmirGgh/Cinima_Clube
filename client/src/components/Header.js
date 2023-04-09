@@ -34,7 +34,6 @@ function Header() {
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-    const navigate = useNavigate
     useEffect(() => {
         if (authService.getToken() == null) {
             // navigate('/login')

@@ -12,13 +12,6 @@ router.route('/').get(async (req, res) => {
   res.json(members);
 });
 
-// Get member By ID
-router.route('/:id').get(async (req, res) => {
-  const { id } = req.params;
-  const member = await membersBLL.getMemberById(id);
-  res.json(member);
-});
-
 // Add a member
 router.route('/').post(async (req, res) => {
   const obj = req.body;

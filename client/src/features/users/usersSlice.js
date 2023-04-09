@@ -33,11 +33,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             query: () => '/jsonPremi',
             transformResponse: responseData => {
                 return permissionAdapter.setAll(permissionAdapter.getInitialState(), responseData);
-            },
-            providesTags: (result, error, arg) => [
-                { type: 'Permission', id: "LIST" },
-                ...result.ids.map(id => ({ type: 'Permission', id }))
-            ]
+            }
         }),
         updateJsonPremi: builder.mutation({
             query: initialJsonPremi => ({
@@ -125,16 +121,29 @@ export const {
     useDeleteUserJsonDataMutation,
 } = usersApiSlice
 
-const { endpoints } = usersApiSlice;
-endpoints.getUsers.rejected?.use((error, _, __, thunkApi) => {
-    const { status } = error.response;
-    let errorMessage = 'An error occurred. Please try again later.';
-    if (status === 401) {
-        errorMessage = 'Unauthorized';
-    } else if (status === 404) {
-        errorMessage = 'Resource not found';
-    } else if (status >= 500) {
-        errorMessage = 'An error occurred on the server';
-    }
-    thunkApi.rejectWithValue({ errorMessage });
-})
+
+
+
+
+
+
+
+
+
+// const { endpoints } = usersApiSlice;
+// endpoints.getUsers.rejected?.use((error, _, __, thunkApi) => {
+//     const { status } = error.response;
+//     let errorMessage = 'An error occurred. Please try again later.';
+//     if (status === 401) {
+//         errorMessage = 'Unauthorized';
+//     } else if (status === 404) {
+//         errorMessage = 'Resource not found';
+//     } else if (status >= 500) {
+//         errorMessage = 'An error occurred on the server';
+//     }
+//     thunkApi.rejectWithValue({ errorMessage });
+// }),
+// // providesTags: (result, error, arg) => [
+// //     { type: 'Permission', id: "LIST" },
+// //     ...result.ids.map(id => ({ type: 'Permission', id }))
+// // ]

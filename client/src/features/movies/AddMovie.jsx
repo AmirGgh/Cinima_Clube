@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import MovieBar from './MovieBar'
 import { Box, Grid, Modal } from '@mui/material'
 import GenericForm from '../../utils/genericForm'
 import { styleModal } from '../../utils/theme'
 import { useAddNewMovieMutation } from './moviesSlice'
 
-export default function AddMovie() {
+export default function AddMovie({ handleClose, open }) {
     const fields = [
         { label: 'movie name', name: 'name', type: 'text' },
         { label: 'genres', name: 'genres', type: 'text' },
@@ -20,18 +20,20 @@ export default function AddMovie() {
     const [addNewMovie] = useAddNewMovieMutation()
     const addThisMovie = async (data) => {
         if (data.genres) data.genres = data.genres.split(",")
-        console.log(data)
         if (data) {
             try {
                 await addNewMovie({ id: movie._id, body: data }).unwrap()
+
             } catch (err) {
                 console.error('Failed to add the movie', err)
             }
         }
-
+        handleClose()
     }
+
     return (
-        <Modal open={true} onClose={false}>
+        <Modal open={open}
+            onClose={handleClose}>
             <Box sx={styleModal}  >
                 <MovieBar />
                 <GenericForm typeForm={"Add"} fields={fields} ditails={movie} movie={true} onSubmit={addThisMovie} />

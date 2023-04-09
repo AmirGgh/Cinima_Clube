@@ -32,9 +32,9 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route>
               < Route path="/movies" element={<MoviesList />} />
-              < Route path="/movies/AddMovie" element={<AddMovie />} />
+              {/* < Route path="/movies/AddMovie" element={<AddMovie />} /> */}
               <Route path="/subscriptions" element={<SubscriptionsList />} />
-              {validPermission("CRUD Users", currPermissions) && <Route path="/users" element={<UsersList />} />}
+              {validPermission("CRUD Users", currPermissions) && currPermissions && <Route path="/users" element={<UsersList />} />}
             </Route>
           </Routes>
         </Container>
