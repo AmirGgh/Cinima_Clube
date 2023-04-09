@@ -26,7 +26,7 @@ const MovieList = ({ newSubs, memberID, subscriptionWatched }) => {
         setNewMovie(event.target.value);
     };
 
-
+    // add new movie id to exist array/ create new array 
     const subscribeMovie = async () => {
         let date = dateDDMMYY()
         if (newMovie) {

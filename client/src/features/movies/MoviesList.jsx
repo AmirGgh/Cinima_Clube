@@ -19,13 +19,14 @@ const MoviesList = () => {
     const editPer = validPermission("Update Movies", currPermissions)
     const viewSubsPer = validPermission("Update Subscriptions", currPermissions)
     const addPer = validPermission("Create Movies", currPermissions)
+    const delPer = validPermission("Delete Movies", currPermissions)
 
     let content;
     if (isLoading) {
         content = <Loading />
     }
     else if (isSuccess) {
-        content = movies.ids.map(movieId => <Movie key={movieId} movieId={movieId} editPer={editPer} viewSubsPer={viewSubsPer} />)
+        content = movies.ids.map(movieId => <Movie key={movieId} movieId={movieId} editPer={editPer} viewSubsPer={viewSubsPer} delPer={delPer} />)
     }
 
     return (

@@ -6,8 +6,28 @@ const getAllSubscriptions = async () => {
 };
 
 // GET - Get By Id - read
-const getSubscriptionById = (id) => {
-  return Subscription.findById({ _id: id });
+const getSubscriptionMemberId = async (id) => {
+  return await Subscription.findOne({ memberID: id })
+    .then((subscription) => {
+      if (subscription) {
+        return subscription
+      } else {
+        console.log('Subscription not found');
+      }
+    })
+    .catch((err) => console.error(err));
+};
+const updateSubscriptionByMemberId = async (memberID, movieID) => {
+  try {
+    const updatedSubscription = await Subscription.findOneAndUpdate(
+      { memberID: memberID },
+      { $pull: { movieWatched: { movieID: movieID } } },
+      { new: true }
+    );
+    return updatedSubscription;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 // POST - Create - first subscription
@@ -34,8 +54,9 @@ const deleteSubscription = async (id) => {
 
 module.exports = {
   getAllSubscriptions,
-  getSubscriptionById,
+  getSubscriptionMemberId,
   addSubscription,
   updateSubscription,
   deleteSubscription,
+  updateSubscriptionByMemberId,
 };

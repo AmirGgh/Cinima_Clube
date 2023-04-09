@@ -83,7 +83,7 @@ router.route('/:id').put(async (req, res) => {
   })
 });
 
-// Delete  a user premissions
+// Delete user premissions
 router.route('/:id').delete(async (req, res) => {
 
   const PRIVATE_KEY = 'somekey';

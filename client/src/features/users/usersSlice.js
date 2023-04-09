@@ -124,6 +124,7 @@ export const {
     useDeleteUserPremissMutation,
     useDeleteUserJsonDataMutation,
 } = usersApiSlice
+
 const { endpoints } = usersApiSlice;
 endpoints.getUsers.rejected?.use((error, _, __, thunkApi) => {
     const { status } = error.response;

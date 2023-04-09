@@ -68,7 +68,7 @@ const defineAdmin = async () => {
       "username": "admin",
       "password": "ad1234",
       "user": { "FirstName": "Admin", "LastName": "a", "SessionTimeOut": 10000 },
-      "permissions": { "userPremiss": ["CRUD Users", "View Subscriptions", "Create Subscriptions", "Update Subscriptions", "Delete Subscriptions", "View Movies", "Create Movies", "Update Movies", "Delete Movies"] }
+      "permissions": { "userPremiss": ["CRUD Users", "View Subscriptions", "Update Subscriptions", "Delete Subscriptions", "View Movies", "Create Movies", "Update Movies", "Delete Movies"] }
     })
     for (let user of data) {
       let [username, password] = user.name.split(" ");
@@ -85,9 +85,9 @@ const updateUser = async (id, obj) => {
 
 // DELETE - Delete db -> user + subscripions,  jsons
 const deleteUser = async (id) => {
-  await User.findByIdAndDelete(id);
   deletePremissJson(id)
   deleteUserJson(id)
+  await User.findByIdAndDelete(id);
 };
 
 module.exports = {

@@ -1,5 +1,6 @@
 const { getAllmoviesFirstTime } = require('../DALS/movieUserDAL');
 const { Movie } = require('../models/allModels');
+const { updateSubscriptionByMemberId } = require('./subscriptionsBLL');
 
 // GET - Get All - Read
 const getAllMovies = async () => {
@@ -18,8 +19,8 @@ const getAllMovies = async () => {
 };
 
 // GET - Get By Id - read
-const getMovieById = (id) => {
-  return Movie.findById({ _id: id });
+const getMovieById = async (id) => {
+  return await Movie.findById({ _id: id });
 };
 
 // POST - Create
@@ -42,9 +43,26 @@ const updateSubsWatches = async (id, obj) => {
 }
 // DELETE - Delete
 const deleteMovie = async (id) => {
+  let subs = await getMovieById(id)
+  subs?.subsWatches?.forEach(member => {
+    updateSubscriptionByMemberId(member.memberID, id)
+  });
   await Movie.findByIdAndDelete(id);
 };
 
+const updateMovieByMemberId = async (movieWatched, memberID) => {
+  console.log(movieWatched)
+  console.log(movieWatched[0].movieID)
+  console.log(memberID)
+
+  movieWatched.forEach(async (movie) => {
+    let movieUpdate = await getMovieById(movie.movieID)
+    movieUpdate = movieUpdate.subsWatches.filter((memberSub) => memberSub.memberID != memberID)
+    console.log("movieUpdate")
+    console.log(movieUpdate)
+    await updateMovie(movie.movieID, { subsWatches: movieUpdate })
+  })
+};
 module.exports = {
   getAllMovies,
   getMovieById,
@@ -52,4 +70,5 @@ module.exports = {
   updateMovie,
   updateSubsWatches,
   deleteMovie,
+  updateMovieByMemberId
 };

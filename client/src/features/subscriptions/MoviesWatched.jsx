@@ -17,7 +17,7 @@ export default function MoviesWatched({ id, date }) {
     let label = `${movie?.name} - ${date}`
     return (
         <div>
-            <Chip label={label} variant="outlined" onClick={show} />
+            {movie?.name && <Chip label={label} variant="outlined" onClick={show} />}
             {showMovie && <MovieDisplay show={show} showMovie={showMovie} movie={movie} key={id} />
             }
         </div>

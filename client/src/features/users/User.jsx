@@ -1,20 +1,27 @@
 import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
 
-import { useState } from 'react';
-import { useDeleteUserJsonDataMutation, useDeleteUserMutation, useDeleteUserPremissMutation, useGetJsonDataQuery, useGetJsonPremiQuery, useGetUsersQuery } from './usersSlice';
+import { useEffect, useState } from 'react';
+import { useDeleteUserMutation, useGetJsonDataQuery, useGetJsonPremiQuery, useGetUsersQuery } from './usersSlice';
 import EditUser from './EditUser';
 import { useDeleteMembersMutation, useGetMembersQuery } from '../subscriptions/subscriptionsSlice';
 
 
 const User = ({ id }) => {
-
+    const [permiLoading, setLoading] = useState(false)
     const { permi } = useGetJsonPremiQuery('getJsonPremi', {
         selectFromResult: ({ data }) => ({
             permi: data?.entities[id]
         }),
     })
+    useEffect(() => {
+        if (!permi && permiLoading) {
+            window.location.reload()
+            setTimeout(() => {
+                setLoading(true)
+            }, 1500);
+        }
+    }, [])
+
     const { user } = useGetUsersQuery('getUsers', {
         selectFromResult: ({ data }) => ({
             user: data?.entities[id]
@@ -32,17 +39,12 @@ const User = ({ id }) => {
     })
 
     const [deleteUser] = useDeleteUserMutation('deleteUser')
-    const [deleteUserPrem] = useDeleteUserPremissMutation('deleteUserPremiss')
-    const [deleteUserData] = useDeleteUserJsonDataMutation('deleteUserJsonData')
     const [deleteMember] = useDeleteMembersMutation('deleteMembers')
     const [editUser, setEditUser] = useState(false)
     const delUser = async (id) => {
-        // console.log({ id })
-        // console.log({ id: member._id })
-        // await deleteUserPrem({ id: id })
-        // await deleteUserData({ id: id })
         await deleteMember({ id: member._id })
         await deleteUser({ id: id })
+        window.location.reload()
     }
     const edit = () => {
         setEditUser(!editUser)

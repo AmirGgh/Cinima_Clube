@@ -4,7 +4,8 @@ import React from 'react'
 import GenericForm from '../../utils/genericForm'
 import { styleModal } from '../../utils/theme'
 import { useDeleteMovieMutation, useUpdateMovieMutation } from './moviesSlice'
-export default function EditMovie({ editMovie, edit, movie }) {
+import { useGetSubscriptionsQuery, useUpdateMemberMutation } from '../subscriptions/subscriptionsSlice'
+export default function EditMovie({ editMovie, edit, movie, delPer }) {
     const fields = [
         { label: 'movie name', name: 'name', type: 'text' },
         { label: 'genres', name: 'genres', type: 'text' },
@@ -28,7 +29,6 @@ export default function EditMovie({ editMovie, edit, movie }) {
     const deleteThisMovie = async () => {
         try {
             await deleteMovie({ id: movie._id }).unwrap()
-
         } catch (err) {
             console.error('Failed to delete the movie', err)
         }
@@ -40,7 +40,7 @@ export default function EditMovie({ editMovie, edit, movie }) {
                     {movie.name}
                 </Typography>
                 <br />
-                <GenericForm typeForm={"Edit"} fields={fields} ditails={movie} movie={true} cancel={edit} onSubmit={updateThisMovie} deleteObj={deleteThisMovie} />
+                <GenericForm typeForm={"Edit"} fields={fields} ditails={movie} movie={true} cancel={edit} onSubmit={updateThisMovie} delPer={delPer} deleteObj={deleteThisMovie} />
             </Box>
         </Modal>
     )

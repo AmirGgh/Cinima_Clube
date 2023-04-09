@@ -24,13 +24,18 @@ const UsersList = () => {
     const [addNewUSER] = useAddUserMutation('addUser')
 
     const addNewUser = async (data) => {
-        let newuser = {
-            "username": data.username, "password": '---',
-            "permissions": { "userPremiss": data.premissions },
-            "user": { "firstName": '---', "lastName": '---', "SessionTimeOut": data.SessionTimeOut },
-            member: { "email": '---', "city": '---', "firstName": '---', "lastName": '---' }
+        if (data.username && data.premissions && data.SessionTimeOut) {
+            let newuser = {
+                "username": data.username, "password": '---',
+                "permissions": { "userPremiss": data.premissions },
+                "user": { "firstName": '---', "lastName": '---', "SessionTimeOut": data.SessionTimeOut },
+                member: { "email": '---', "city": '---', "firstName": '---', "lastName": '---' }
+            }
+            await addNewUSER({ body: newuser })
+            window.location.reload()
+        } else {
+            alert('please fill out username, sessions and permissions ')
         }
-        await addNewUSER({ body: newuser })
     }
     let content;
     if (isLoading) {

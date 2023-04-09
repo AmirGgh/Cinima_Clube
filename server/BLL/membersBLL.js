@@ -1,6 +1,8 @@
 
 const { getAllUsersFirstTime } = require('../DALS/movieUserDAL');
 const { Member } = require('../models/allModels');
+const { updateMovieByMemberId } = require('./moviesBLL');
+const { getSubscriptionMemberId } = require('./subscriptionsBLL');
 const { getAllUsersJson } = require('./userJsonBLL');
 
 // GET - Get All - Read
@@ -33,8 +35,11 @@ const updateMember = async (id, obj) => {
 
 // DELETE - Delete
 const deleteMember = async (id) => {
+    let subs = await getSubscriptionMemberId(id) // memeberID, moviesIDS
+    if (subs?.movieWatched?.length > 0) {
+        await updateMovieByMemberId(subs.movieWatched, id)
+    }
     await Member.findByIdAndDelete(id);
-    return 'Deleted!';
 };
 
 module.exports = {

@@ -5,13 +5,12 @@ import authService from '../utils/authService'
 import { styleTextInput } from './theme';
 import { useGetJsonPremiQuery } from '../features/users/usersSlice';
 
-function GenericForm({ onSubmit, fields, movie, user, typeForm, cancel, ditails, deleteObj }) {
+function GenericForm({ onSubmit, fields, movie, user, typeForm, cancel, ditails, deleteObj, delPer }) {
     const [formData, setFormData] = useState({});
     const [EditPremiss, setEditPremiss] = useState(false);
     const initialPremissions = [
         { key: "View Subscriptions", value: false },
-        { key: "Create Subscriptions", value: false },
-        { key: "Delete Subscriptions", value: false },
+        { key: "Update Subscriptions", value: false },
         { key: "View Movies", value: false },
         { key: "Create Movies", value: false },
         { key: "Update Movies", value: false },
@@ -38,11 +37,12 @@ function GenericForm({ onSubmit, fields, movie, user, typeForm, cancel, ditails,
             setPremissions([...premissions, premissions[1].value = false])
             setPremissions([...premissions, premissions[2].value = false])
         }
-        if (key !== "View Movies" && !premissions[3].value) {
-            setPremissions([...premissions, premissions[3].value = true])
+        if (key !== "View Movies" && !premissions[2].value) {
+            setPremissions([...premissions, premissions[2].value = true])
         }
-        if (key === "Create Subscriptions" || key === "Delete Subscriptions" && !premissions[0].value) {
+        if (key === "Delete Movies" || key === "Update Subscriptions" && !premissions[0].value) {
             setPremissions([...premissions, premissions[0].value = true])
+            setPremissions([...premissions, premissions[4].value = true])
         }
 
         const updatedPremissions = premissions.map((premission, index) => premission.key === key ? { ...premission, value } : premission);
@@ -117,7 +117,7 @@ function GenericForm({ onSubmit, fields, movie, user, typeForm, cancel, ditails,
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexGrow: 1 }}>
                 <Button sx={{ margin: '0.5rem' }} variant="contained" onClick={handleSubmit}>{typeForm}</Button>
                 {cancel && <Button sx={{ margin: 'auto' }} variant="contained" onClick={cancel}>cancel</Button>}
-                {deleteObj && <Button sx={{ margin: '0.5rem', '&:hover': { background: '#ff0000' } }} variant="contained" onClick={deleteObj}>delete</Button>}
+                {deleteObj && delPer && <Button sx={{ margin: '0.5rem', '&:hover': { background: '#ff0000' } }} variant="contained" onClick={deleteObj}>delete</Button>}
             </Box>
         </Box>
     );

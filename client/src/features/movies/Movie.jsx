@@ -11,7 +11,7 @@ import MovieSubs from './MovieSubs';
 
 
 
-const Movie = ({ movieId, editPer, viewSubsPer }) => {
+const Movie = ({ movieId, editPer, viewSubsPer, delPer }) => {
 
     const { movie } = useGetMoviesQuery('getMovies', {
         selectFromResult: ({ data }) => ({
@@ -32,6 +32,7 @@ const Movie = ({ movieId, editPer, viewSubsPer }) => {
             <MovieSubs key={memb.email} id={memb.memberID} date={memb.date} />
         ))
     }
+
     return (
         <Card sx={{
             my: 1,
@@ -49,9 +50,9 @@ const Movie = ({ movieId, editPer, viewSubsPer }) => {
                 <Button size="small" onClick={show}>Show More</Button>
                 <MovieDisplay show={show} showMovie={showMovie} movie={movie} />
                 {editPer && <Button size="small" onClick={edit}>Edit</Button>}
-                {editPer && <EditMovie key={movie.image} edit={edit} editMovie={editMovie} movie={movie} />}
+                {editPer && <EditMovie key={movie.image} delPer={delPer} edit={edit} editMovie={editMovie} movie={movie} />}
             </CardActions>
-            {movie.subsWatches?.length > 0 && viewSubsPer && <CardContent sx={{
+            {movie.subsWatches?.length >= 1 && viewSubsPer && <CardContent sx={{
                 display: 'flex',
                 flexWrap: 'wrap',
                 alignContent: 'center',

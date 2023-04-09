@@ -8,12 +8,9 @@ export default function MovieSubs({ id, date }) {
             member: data?.entities[id]
         }),
     })
-
     return (
-        <Typography key={member?.firstName}>{member?.firstName} {member?.lastName} - {date}</Typography>
+        <>
+            {member?.firstName && <Typography key={member?.firstName}>{member?.firstName} {member?.lastName} - {date}</Typography>}
+        </>
     )
 }
-
-{/* <>
-    <Chip label={label} variant="outlined" />
-</> */}
