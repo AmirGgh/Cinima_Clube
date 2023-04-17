@@ -1,6 +1,5 @@
 import { Button, Grid } from '@mui/material'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import AddMovie from './AddMovie'
 
 export default function MovieBar() {

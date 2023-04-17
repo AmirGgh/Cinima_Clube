@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardActions, CardContent, CardMedia, ListItem, Modal, Paper, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Modal, Typography } from '@mui/material';
 import { useGetMoviesQuery } from './moviesSlice';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import MovieDisplay from './MovieDisplay';

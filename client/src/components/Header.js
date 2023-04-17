@@ -1,10 +1,7 @@
-import { useEffect } from "react"
+import { useEffect, useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import authService from "../utils/authService"
 
-
-
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -17,14 +14,12 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import TheatersRoundedIcon from '@mui/icons-material/TheatersRounded';
 import { AppContext } from "../App";
-import { useContext } from "react";
-import { useState } from "react";
 
 
 function Header() {
     const { currPermissions } = useContext(AppContext)
-    const pagePermiss = authService.getPermissions()
     const [pages, setpages] = useState([])
+    const navigate = useNavigate();
     useEffect(() => {
         if (currPermissions) {
             let p = currPermissions.filter((per) => (per === "CRUD Users" || per === "View Subscriptions" || per === 'View Movies')).map((p) => p.split(' ')[1]).reverse()
@@ -32,11 +27,12 @@ function Header() {
         }
     }, [currPermissions])
 
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [anchorElNav, setAnchorElNav] = useState(null);
+    const [anchorElUser, setAnchorElUser] = useState(null);
+
     useEffect(() => {
         if (authService.getToken() == null) {
-            // navigate('/login')
+            navigate('/login')
         }
     }, [])
     const handleOpenNavMenu = (event) => {
@@ -152,9 +148,10 @@ function Header() {
                     </Box>
 
                     <Button key="Logout"
-                        onClick={() => { authService.reset(); handleCloseNavMenu(); }}
+
+                        onClick={() => { authService.reset(); handleCloseNavMenu(); window.location.reload(); }}
                         sx={{ color: 'white', display: { xs: 'none', md: 'flex' } }}>
-                        <Link style={{ textDecoration: "none", color: "white" }} to={'/'} > {authService.getRole()?.toUpperCase()} - Logout</Link>
+                        <Link style={{ textDecoration: "none", color: "white" }} to={'/login'} > {authService.getRole()?.toUpperCase()} - Logout</Link>
                     </Button>
 
                 </Toolbar>

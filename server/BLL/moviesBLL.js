@@ -51,15 +51,9 @@ const deleteMovie = async (id) => {
 };
 
 const updateMovieByMemberId = async (movieWatched, memberID) => {
-  console.log(movieWatched)
-  console.log(movieWatched[0].movieID)
-  console.log(memberID)
-
   movieWatched.forEach(async (movie) => {
     let movieUpdate = await getMovieById(movie.movieID)
     movieUpdate = movieUpdate.subsWatches.filter((memberSub) => memberSub.memberID != memberID)
-    console.log("movieUpdate")
-    console.log(movieUpdate)
     await updateMovie(movie.movieID, { subsWatches: movieUpdate })
   })
 };

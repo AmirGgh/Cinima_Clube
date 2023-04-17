@@ -1,10 +1,8 @@
-import { Box, Button, Chip, Modal, Typography } from '@mui/material'
-import { Stack } from '@mui/system'
+import { Box, Modal, Typography } from '@mui/material'
 import React from 'react'
 import GenericForm from '../../utils/genericForm'
 import { styleModal } from '../../utils/theme'
 import { useDeleteMovieMutation, useUpdateMovieMutation } from './moviesSlice'
-import { useGetSubscriptionsQuery, useUpdateMemberMutation } from '../subscriptions/subscriptionsSlice'
 export default function EditMovie({ editMovie, edit, movie, delPer }) {
     const fields = [
         { label: 'movie name', name: 'name', type: 'text' },
@@ -16,7 +14,6 @@ export default function EditMovie({ editMovie, edit, movie, delPer }) {
     const [deleteMovie] = useDeleteMovieMutation()
     const updateThisMovie = async (data) => {
         if (data.genres) data.genres = data.genres.split(",")
-        console.log(data)
         if (data) {
             try {
                 await updateMovie({ id: movie._id, body: data }).unwrap()

@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
 import MovieBar from './MovieBar'
-import { Box, Grid, Modal } from '@mui/material'
+import { Box, Modal } from '@mui/material'
 import GenericForm from '../../utils/genericForm'
 import { styleModal } from '../../utils/theme'
 import { useAddNewMovieMutation } from './moviesSlice'

@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import Movie from './Movie';
 import { useGetMoviesQuery } from './moviesSlice';
 
@@ -6,7 +6,6 @@ import Loading from '../../components/Loading';
 import { AppContext } from '../../App';
 import { useContext } from 'react';
 import { validPermission } from '../../utils/permissionsUI';
-import { Link } from 'react-router-dom';
 import MovieBar from './MovieBar';
 const MoviesList = () => {
     const { currPermissions } = useContext(AppContext)

@@ -1,4 +1,4 @@
-const { Subscription, Movie, Member } = require('../models/allModels');
+const { Subscription } = require('../models/allModels');
 // GET - Get All - Read
 const getAllSubscriptions = async () => {
   let subscriptions = await Subscription.find({})

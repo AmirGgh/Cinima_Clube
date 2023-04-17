@@ -1,6 +1,5 @@
 import { Box, Chip, Modal, Typography, useMediaQuery } from '@mui/material'
 import { Stack } from '@mui/system'
-import React from 'react'
 
 export default function MovieDisplay({ show, showMovie, movie }) {
     const isMobile = useMediaQuery('(min-width:470px)');
@@ -23,8 +22,8 @@ export default function MovieDisplay({ show, showMovie, movie }) {
                     sx={{
                         display: 'flex',
                         alignItems: 'center',
-                        width: '90%',
-                        height: '80%',
+                        width: { xs: '90%', lg: '80%', xl: '60%' },
+                        height: { xs: '80%', lg: '70%', xl: '50%' },
                         backgroundColor: 'black',
                         boxShadow: 24,
                         borderRadius: 1,
@@ -42,7 +41,6 @@ export default function MovieDisplay({ show, showMovie, movie }) {
                             position: 'absolute',
                             top: 0,
                             bottom: 0,
-                            left: 0,
                             left: '65%',
                             display: 'flex',
                             justifyContent: 'center',
@@ -54,7 +52,6 @@ export default function MovieDisplay({ show, showMovie, movie }) {
                             position: 'absolute',
                             top: 0,
                             bottom: 0,
-                            right: 0,
                             right: {
                                 sm: '35%', xs: '0%'
                             },

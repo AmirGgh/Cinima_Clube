@@ -10,7 +10,6 @@ import UsersList from "./features/users/UsersList";
 import { createContext, useEffect, useState } from "react";
 import authService from "./utils/authService";
 import { validPermission } from "./utils/permissionsUI";
-import AddMovie from "./features/movies/AddMovie";
 
 export const AppContext = createContext()
 function App() {
@@ -32,7 +31,6 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route>
               < Route path="/movies" element={<MoviesList />} />
-              {/* < Route path="/movies/AddMovie" element={<AddMovie />} /> */}
               <Route path="/subscriptions" element={<SubscriptionsList />} />
               {validPermission("CRUD Users", currPermissions) && currPermissions && <Route path="/users" element={<UsersList />} />}
             </Route>

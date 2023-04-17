@@ -1,7 +1,5 @@
-import { Box, Chip, Modal, Typography } from '@mui/material'
-import { Stack } from '@mui/system'
+import { Box,  Modal, Typography } from '@mui/material'
 import React from 'react'
-import { redirect } from 'react-router-dom'
 import GenericForm from '../../utils/genericForm'
 import { styleModal } from '../../utils/theme'
 import { useUpdateMemberMutation } from '../subscriptions/subscriptionsSlice'

@@ -11,7 +11,6 @@ router.post('/login', async (req, res) => {
     const username = req.body.username
     const password = req.body.password
     const validUser = users.find((user) => user.username === username && user.password === password)
-    console.log(validUser)
     //valid name & password
     if (validUser) {
         //find user id or username

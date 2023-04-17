@@ -1,5 +1,4 @@
 import { createEntityAdapter } from "@reduxjs/toolkit";
-import { sub } from 'date-fns';
 import { apiSlice } from "../api/apiSlice";
 
 const moviesAdapter = createEntityAdapter({
@@ -21,7 +20,6 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         getUnwatchedMovies: builder.query({
             query: () => '/movies',
             transformResponse: responseData => {
-                let unwatched = responseData
                 return moviesAdapter.setAll(moviesAdapter.getInitialState(), responseData)
             },
             providesTags: (result, error, arg) => [

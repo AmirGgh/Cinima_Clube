@@ -1,5 +1,4 @@
 
-const { getAllUsersFirstTime } = require('../DALS/movieUserDAL');
 const { Member } = require('../models/allModels');
 const { updateMovieByMemberId } = require('./moviesBLL');
 const { getSubscriptionMemberId } = require('./subscriptionsBLL');
