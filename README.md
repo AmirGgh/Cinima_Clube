@@ -1,7 +1,7 @@
 # Cinima Manager 
 A web application based on two Rest API servers and a client side in React.js. The architecture of the system was divided according to Business and Data layers
 
-Server side: The servers were developed using express and node. All calls between the servers are made using Rest calls based on CRUD. The servers manage databases realized by mongoDB and the modeling of the objects was done with the help of Mongoose. The routers on the servers were realized and secured by using jwt with express.
+Server side: The servers were developed using express and node. All calls between the servers are made using Rest API calls based on CRUD. The servers manage databases realized by mongoDB and the modeling of the objects was done with the help of Mongoose. The routers on the servers were realized and secured by using jwt with express.
 
 Client side: developed in React.js, loading performance and state management have been improved using Redux, the design is implemented using MUI. The distribution of permissions in the application allows only existing users to perform actions according to the limitations defined for them by admin.
 
