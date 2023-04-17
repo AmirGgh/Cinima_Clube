@@ -56,12 +56,12 @@ const User = ({ id }) => {
         }}>
             <CardContent>
                 {member ? <>
-                    <Typography variant='h5' > {member?.firstName} {member?.lastName}</Typography >
+                    <Typography > {member?.firstName} {member?.lastName}</Typography >
                     <Typography > Username: {user?.username}</Typography >
                     <Typography > Email: {member?.email}</Typography >
                     <Typography > City: {member?.city}</Typography >
                 </> : <>
-                    <Typography variant='h5' >Admin</Typography>
+                    <Typography >Admin</Typography>
                     <Typography > Username: {user?.username}</Typography >
                 </>
                 }

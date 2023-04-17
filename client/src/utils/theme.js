@@ -1,10 +1,14 @@
-import { createTheme } from "@mui/material";
+import { createTheme, responsiveFontSizes } from "@mui/material";
 
-const theme = createTheme({
+let theme = createTheme({
     palette: {
         mode: "dark",
     },
+    typography: {
+        fontSize: 12,
+    },
 })
+theme = responsiveFontSizes(theme);
 const styleModal = {
     position: 'absolute',
     top: '50%',

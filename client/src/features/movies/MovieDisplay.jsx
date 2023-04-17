@@ -1,8 +1,10 @@
-import { Box, Chip, Modal, Typography } from '@mui/material'
+import { Box, Chip, Modal, Typography, useMediaQuery } from '@mui/material'
 import { Stack } from '@mui/system'
 import React from 'react'
 
 export default function MovieDisplay({ show, showMovie, movie }) {
+    const isMobile = useMediaQuery('(min-width:470px)');
+
     return (
         <Modal open={showMovie} onClose={show}>
             <Box
@@ -21,8 +23,8 @@ export default function MovieDisplay({ show, showMovie, movie }) {
                     sx={{
                         display: 'flex',
                         alignItems: 'center',
-                        width: '45%',
-                        height: '70%',
+                        width: '90%',
+                        height: '80%',
                         backgroundColor: 'black',
                         boxShadow: 24,
                         borderRadius: 1,
@@ -30,7 +32,7 @@ export default function MovieDisplay({ show, showMovie, movie }) {
                         position: 'relative',
                     }}
                 >
-                    <Box
+                    {isMobile && <Box
                         sx={{
                             width: '35%',
                             height: '100%',
@@ -46,19 +48,22 @@ export default function MovieDisplay({ show, showMovie, movie }) {
                             justifyContent: 'center',
                             padding: 3,
                         }}
-                    />
+                    />}
                     <Box
                         sx={{
                             position: 'absolute',
                             top: 0,
                             bottom: 0,
                             right: 0,
-                            right: '35%',
+                            right: {
+                                sm: '35%', xs: '0%'
+                            },
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'center',
                             padding: 3,
-                        }}
+                        }
+                        }
                     >
                         <Typography variant="h5" component="h2" gutterBottom>
                             {movie.name}
@@ -82,7 +87,7 @@ export default function MovieDisplay({ show, showMovie, movie }) {
 
                 </Box>
             </Box>
-        </Modal>
+        </Modal >
     )
 }
 

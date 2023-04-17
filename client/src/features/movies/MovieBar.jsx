@@ -8,7 +8,7 @@ export default function MovieBar() {
     const handleClose = () => setOpen(!open);
     return (
         <Grid container display="flex" spacing={1} >
-            <Button onClick={handleClose}>Add movie</Button>
+            <Button onClick={handleClose}>Add new movie</Button>
             {open && <AddMovie handleClose={handleClose} open={open} />}
         </Grid>
     )

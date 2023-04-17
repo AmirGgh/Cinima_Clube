@@ -4,7 +4,7 @@ import { Button, Box, FormGroup, FormControlLabel, Checkbox, FormControl, FormLa
 import authService from '../utils/authService'
 import { styleTextInput } from './theme';
 import { useGetJsonPremiQuery } from '../features/users/usersSlice';
-
+// The file manage almoste all the forms and broings all the inputs to one object that ready to send as request
 function GenericForm({ onSubmit, fields, movie, user, typeForm, cancel, ditails, deleteObj, delPer }) {
     const [formData, setFormData] = useState({});
     const [EditPremiss, setEditPremiss] = useState(false);
@@ -30,7 +30,7 @@ function GenericForm({ onSubmit, fields, movie, user, typeForm, cancel, ditails,
     }
 
     const handleChangePremission = (key, value) => {
-        // permissions logic
+        // users permissions logic
         if (!value && key === "View Movies") {
             setPremissions([...premissions.map((p) => p.value = false)])
         } else if (!value && key === "View Subscriptions") {
@@ -42,13 +42,14 @@ function GenericForm({ onSubmit, fields, movie, user, typeForm, cancel, ditails,
         }
         if (key === "Delete Movies" || key === "Update Subscriptions" && !premissions[0].value) {
             setPremissions([...premissions, premissions[0].value = true])
+            setPremissions([...premissions, premissions[1].value = true])
             setPremissions([...premissions, premissions[4].value = true])
         }
 
         const updatedPremissions = premissions.map((premission, index) => premission.key === key ? { ...premission, value } : premission);
         // update permissions display
         setPremissions(updatedPremissions);
-        // update permissions array, cheng  with redux
+        // update permissions array, change  with redux
         const userUpdate = updatedPremissions.filter(p => p.value).map((p) => p.key);
         setFormData(prevState => ({
             ...prevState,
@@ -75,9 +76,9 @@ function GenericForm({ onSubmit, fields, movie, user, typeForm, cancel, ditails,
         if (cancel) cancel()
     }
 
-    const handleReset = () => {
-        setFormData({});
-    }
+    // const handleReset = () => {
+    //     setFormData({});
+    // }
 
     const editUserPre = authService.getRole() === 'admin' && !EditPremiss && user;
     return (

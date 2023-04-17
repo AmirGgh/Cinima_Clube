@@ -17,7 +17,7 @@ const MoviesList = () => {
     } = useGetMoviesQuery('getMovies')
 
     const editPer = validPermission("Update Movies", currPermissions)
-    const viewSubsPer = validPermission("Update Subscriptions", currPermissions)
+    const viewSubsPer = validPermission("View Subscriptions", currPermissions)
     const addPer = validPermission("Create Movies", currPermissions)
     const delPer = validPermission("Delete Movies", currPermissions)
 
@@ -30,7 +30,7 @@ const MoviesList = () => {
     }
 
     return (
-        <Grid container display="flex" spacing={2}  >
+        <Grid container display="flex" spacing={1}  >
             {addPer && <MovieBar />}
             {content}
         </Grid>

@@ -41,6 +41,7 @@ export default function EditUser({ editUser, edit, user, member }) {
         if (data?.premissions && data.premissions.length > 0) {
             await updateJsonPremi({ id: user._id, body: { id: user._id, userPremiss: data.premissions } }).unwrap()
         }
+        window.location.reload();
     }
     return (
         <Modal open={editUser} onClose={edit}>
